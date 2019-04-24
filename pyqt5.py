@@ -27,7 +27,7 @@ class MainUi(QtWidgets.QMainWindow):
         self.main_layout.addWidget(self.right_widget,0,5,12,10)
         self.setCentralWidget(self.main_widget)
 
-        # next part
+        # Side Bar
 
         self.left_label_1 = QtWidgets.QComboBox()
         self.left_label_1.setObjectName('left_label')
