@@ -59,7 +59,7 @@ class MainUi(QtWidgets.QMainWindow):
         self.left_button_9 = QtWidgets.QPushButton(qtawesome.icon('fa.question', color='white'), "遇到问题")
         self.left_button_9.setObjectName('left_button')
 
-        #search bar
+        #top bar
         self.left_top_button = QtWidgets.QPushButton("打开文件")
         self.right_bar_widget = QtWidgets.QWidget()
         self.right_bar_layout = QtWidgets.QGridLayout()
@@ -85,12 +85,7 @@ class MainUi(QtWidgets.QMainWindow):
         self.right_bar_widget_search_input = QtWidgets.QLabel()
         self.right_layout.addWidget(self.right_bar_widget_search_input, 5, 7, 1, 1)
 
-
-
-
-
         self.right_bar_layout.addWidget(self.right_bar_widget_search_input, 0, 1, 1, 8)
-
         self.right_layout.addWidget(self.right_bar_widget, 0, 0, 1, 9)
 
 
@@ -108,9 +103,6 @@ class MainUi(QtWidgets.QMainWindow):
         self.left_layout.addWidget(self.left_button_7, 10, 0, 1, 3)
         self.left_layout.addWidget(self.left_button_8, 11, 0, 1, 3)
         self.left_layout.addWidget(self.left_button_9, 12, 0, 1, 3)
-
-
-
 
 
         self.right_recommend_widget = QtWidgets.QWidget()
@@ -134,8 +126,7 @@ class MainUi(QtWidgets.QMainWindow):
         self.right_layout.addWidget(self.right_recommend_widget, 2, 0, 2, 9)
 
 
-
-        # LOWER MID
+        # LOWER MID SECTION
 
         self.lower_mid_widget = QtWidgets.QWidget()
         self.lower_mid_layout = QtWidgets.QGridLayout()
@@ -157,8 +148,6 @@ class MainUi(QtWidgets.QMainWindow):
 
         self.right_layout.addWidget(self.lower_mid_label, 4, 2, 1, 1)
         self.right_layout.addWidget(self.lower_mid_label_2, 5, 2, 1, 1)
-
-
 
 
 
@@ -191,9 +180,6 @@ class MainUi(QtWidgets.QMainWindow):
 
         self.right_layout.addWidget(self.lower_right_label, 5, 7, 1, 1)
         self.right_layout.addWidget(self.lower_right_button_1, 6, 7, 1, 1)
-
-
-
 
 
 
