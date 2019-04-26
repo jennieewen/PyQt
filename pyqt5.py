@@ -8,7 +8,7 @@ class MainUi(QtWidgets.QMainWindow):
         self.init_ui()
 
     def init_ui(self):
-        self.setFixedSize(1200,800)
+        self.setFixedSize(1200, 800)
         self.main_widget = QtWidgets.QWidget()
         self.main_layout = QtWidgets.QGridLayout()
         self.main_widget.setLayout(self.main_layout)
