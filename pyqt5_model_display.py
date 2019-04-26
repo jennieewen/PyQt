@@ -8,21 +8,20 @@ from PyQt5.QtWidgets import *
 
 from PyQt5.QtWidgets import QFileDialog
 
-
 global global_fileContent
 global global_modelTitle
 global global_filepath
 
 global_fileContent = './dog.jpg'
 global_modelTitle = ""
-global_filepath = ''
+global_filepath = 'C:/Users/jenni/Desktop/python/projects/school_project/appFolder/a.txt'
 
 
 class MainUi(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUi()
-        self.setAttribute(QtCore.Qt.WA_DeleteOnClose) # prevents starttimer error
+        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # prevents starttimer error
 
     def initUi(self):
 
@@ -52,12 +51,10 @@ class MainUi(QtWidgets.QMainWindow):
         ## onlyfiles = [f for f in listdir('appFolder/') if isfile(join('appFolder/', f))] # list of all files in directory
         ## print("all files in directory: ",onlyfiles)
 
-        
         importFile = global_filepath
         print("weeeee", importFile)
         _, importFileDisplay = os.path.split(importFile)
-        
-        
+
         self.model = QStandardItemModel()
         self.rootNode = self.model.invisibleRootItem()
         self.branch1 = QStandardItem(importFileDisplay)
@@ -71,22 +68,19 @@ class MainUi(QtWidgets.QMainWindow):
         self.rootNode.appendRow([self.branch1, None])
         '''
 
-
         lst = []
-        try:
-            with open(importFile, 'r') as f:
-                for line in f.readlines():
-                    line = line.strip()
-                    score = line.split(":")
-                    lst.append(score)
-                    dict = {element[0]: element[1] for element in lst}
-                    print(dict)
-                    # for k, v in dict.items():
-                    #     print("key", k)
-                    #     self.branch1.appendRow(([QStandardItem(k), None]))
 
-        except FileNotFoundError:
-            pass
+        with open(importFile, 'r') as f:
+            for line in f.readlines():
+                line = line.strip()
+                score = line.split(":")
+                lst.append(score)
+                dict = {element[0]: element[1] for element in lst}
+                print(dict)
+            for k, v in dict.items():
+                print("key", k)
+                self.branch1.appendRow(([QStandardItem(k), None]))
+
 
 
         self.rootNode.appendRow([self.branch1, None])
@@ -108,7 +102,6 @@ class MainUi(QtWidgets.QMainWindow):
         self.left_label_3.setObjectName('left_label')
         self.left_layout.addWidget(self.left_label_3, 4, 0, 1, 5)
         self.left_layout.addWidget(self.left_bar_bg, 0, 0)
-
 
         self.right_bar_widget = QtWidgets.QWidget()  # 右侧顶部搜索框部件
         self.right_bar_layout = QtWidgets.QGridLayout()  # 右侧顶部搜索框网格布局
@@ -200,7 +193,6 @@ class MainUi(QtWidgets.QMainWindow):
 
         self.show()
 
-
     def OpenFileFullPathDiaglog(self):
 
         options = QFileDialog.Options()
@@ -220,7 +212,6 @@ class MainUi(QtWidgets.QMainWindow):
             self.top_center.setObjectName('mid_label')
             self.right_bar_layout.addWidget(self.top_center, 0, 0)
 
-
     def openFileNamesDialog(self):
         options = QFileDialog.Options()
 
@@ -236,8 +227,8 @@ class MainUi(QtWidgets.QMainWindow):
             filePath = str
             print(filePath)
             self.top_center = QtWidgets.QLabel.clear(self.top_center)
-            self.top_center = QtWidgets.QLabel(filePath)              #create
-            self.top_center.setObjectName('mid_label')                #setParameter
+            self.top_center = QtWidgets.QLabel(filePath)  # create
+            self.top_center.setObjectName('mid_label')  # setParameter
             self.right_bar_layout.addWidget(self.top_center, 0, 0)
 
             # file path shortened
@@ -254,9 +245,9 @@ class MainUi(QtWidgets.QMainWindow):
             self.right_layout.addWidget(self.lower_mid_label, 4, 2, 1, 1)
 
             # image file
-            #self.lg_pic.setIcon(QtGui.QIcon('./'+fileName))
+            # self.lg_pic.setIcon(QtGui.QIcon('./'+fileName))
             global global_fileContent
-            global_fileContent = './'+fileName;
+            global_fileContent = './' + fileName;
             self.lg_pic.setIcon(QtGui.QIcon(global_fileContent))
 
             # entire path
@@ -274,4 +265,5 @@ def main():
 
 if __name__ == '__main__':
     import sys
+
     main()
