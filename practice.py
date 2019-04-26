@@ -50,18 +50,24 @@ class MainUi(QtWidgets.QMainWindow):
         self.left_layout.addWidget(self.treeview, 5, 0, 1, 3)
         self.treeview.header().setVisible(False)
 
+        self.treeview.doubleClicked.connect(self.treeview_Clicked)
+
+        ''' 
         importFile = global_filepath
         _, importFileDisplay = os.path.split(importFile)
 
         self.model = QStandardItemModel()
         self.rootNode = self.model.invisibleRootItem()
         self.branch1 = QStandardItem(importFileDisplay)
-        self.branch2 = QStandardItem(importFileDisplay)
+        self.branch2 =QStandardItem(importFileDisplay)
 
-        # self.lower_mid_label = QtWidgets.QLabel("   模型子物体名称:" + global_modelTitle)
-        # self.lower_mid_label.setObjectName('middle_label')
+       # self.lower_mid_label = QtWidgets.QLabel("   模型子物体名称:" + global_modelTitle)
+       # self.lower_mid_label.setObjectName('middle_label')
 
-        # self.right_layout.addWidget(self.lower_mid_label, 4, 2, 1, 1)
+
+
+        #self.right_layout.addWidget(self.lower_mid_label, 4, 2, 1, 1)
+        '''
 
         '''
         self.model = QStandardItemModel()
@@ -71,7 +77,7 @@ class MainUi(QtWidgets.QMainWindow):
         self.branch1.setObjectName('middle_label')
         self.rootNode.appendRow([self.branch1, None])
         '''
-        self.rootNode.appendRow([self.branch1, None])
+        '''self.rootNode.appendRow([self.branch1, None])
         self.rootNode.appendRow([self.branch2, None])
 
         self.treeview.setModel(self.model)
@@ -87,7 +93,7 @@ class MainUi(QtWidgets.QMainWindow):
                 print(dict)
             for k, v in dict.items():
                 print("key", k)
-                self.branch1.appendRow(([QStandardItem(k), None]))
+                self.branch1.appendRow(([QStandardItem(k), None]))'''
 
         self.left_bar_bg = QtWidgets.QPushButton(qtawesome.icon('fa.angle-down', color='white'), "choose pic")
         self.left_bar_bg.setObjectName('left_button')
@@ -201,18 +207,30 @@ class MainUi(QtWidgets.QMainWindow):
         files, _ = QFileDialog.getOpenFileNames(self, "QFileDialog.getOpenFileNames()", "",
                                                 "All Files (*);;Python Files (*.py)", options=options)
         if files:
-            print(files)
+            print("files", files)
             str = ''.join(files)
             print(str)
+
             # File Path
             filePath = str
             print(filePath)
             self.top_center = QtWidgets.QLabel.clear(self.top_center)
-            self.top_center = QtWidgets.QLabel(filePath)
-            self.top_center.setObjectName('mid_label')
+            self.top_center = QtWidgets.QLabel(filePath)  # create
+            self.top_center.setObjectName('mid_label')  # setParameter
             self.right_bar_layout.addWidget(self.top_center, 0, 0)
-            print("THISSSS", filePath)
-            self.branch1 = QStandardItem(filePath)
+
+            # file path shortened
+            _, fileName = os.path.split(str)
+
+            # file name
+            self.lower_mid_label = QtWidgets.QLabel.clear(self.lower_mid_label)
+
+            global global_modelTitle
+            global_modelTitle = "   模型子物体名称: " + fileName
+            self.lower_mid_label = QtWidgets.QLabel(global_modelTitle)
+
+            self.lower_mid_label.setObjectName('middle_label')
+            self.right_layout.addWidget(self.lower_mid_label, 4, 2, 1, 1)
 
     def openFileNamesDialog(self):
         options = QFileDialog.Options()
@@ -227,7 +245,7 @@ class MainUi(QtWidgets.QMainWindow):
 
             # File Path
             filePath = str
-            print(filePath)
+            # print(filePath)
             self.top_center = QtWidgets.QLabel.clear(self.top_center)
             self.top_center = QtWidgets.QLabel(filePath)  # create
             self.top_center.setObjectName('mid_label')  # setParameter
@@ -255,62 +273,112 @@ class MainUi(QtWidgets.QMainWindow):
             # entire path
             global global_filepath
             global_filepath = filePath
-            print("global filepath", global_filepath)
-            importFile = global_filepath
-            _, importFileDisplay = os.path.split(importFile)
+            # print("global filepath", global_filepath)
+            self.get_dict()
 
-            self.model = QStandardItemModel()
-            self.rootNode = self.model.invisibleRootItem()
-            self.branch1 = QStandardItem(importFileDisplay)
-            self.rootNode.appendRow([self.branch1, None])
+    def get_dict(self):
+        importFile = global_filepath
+        _, importFileDisplay = os.path.split(importFile)
 
-            self.treeview.setModel(self.model)
-            self.treeview.setAlternatingRowColors(True)
+        self.model = QStandardItemModel()
+        self.rootNode = self.model.invisibleRootItem()
+        self.branch1 = QStandardItem(importFileDisplay)
+        self.rootNode.appendRow([self.branch1, None])
 
-            lst = []
-            with open(importFile, 'r') as f:
-                for line in f.readlines():
-                    line = line.strip()
-                    score = line.split(":")
-                    lst.append(score)
-                    dict = {element[0]: element[1] for element in lst}
-                    print(dict)
-                for k, v in dict.items():
-                    print("key", k)
-                    self.branch1.appendRow(([QStandardItem(k), None]))
+        self.treeview.setModel(self.model)
+        self.treeview.setAlternatingRowColors(True)
+        self.lower_mid_label_2 = QtWidgets.QLabel.clear(self.lower_mid_label_2)
 
-                    global global_modelTitle
-                    global_modelTitle = "   模型子物体名称: " + fileName
-                    self.lower_mid_label = QtWidgets.QLabel(global_modelTitle)
-                    self.lower_mid_label.setObjectName('middle_label')
-                    self.right_layout.addWidget(self.lower_mid_label, 4, 2, 1, 1)
+        lst = []
+        with open(importFile, 'r') as f:
+            for line in f.readlines():
+                line = line.strip()
+                score = line.split(":")
+                lst.append(score)
+                dict1 = {element[0]: element[1] for element in lst}
+            for k, v in dict1.items():
+                # print("key", k, "value", v)
+                self.branch1.appendRow(([QStandardItem(k), None]))
+                print("POP", k)
 
-                    self.lower_mid_label_2 = QtWidgets.QLabel("   子物体贴图信息:")
-                    self.lower_mid_label_2.setObjectName('mid_label')
-                    self.right_layout.addWidget(self.lower_mid_label_2, 5, 2, 1, 1)
+            # global global_fileInfo
+            global_fileInfo = "   子物体贴图信息:" + v
+            # print("value", v)
+            self.lower_mid_label_2 = QtWidgets.QLabel(global_fileInfo)
+            self.lower_mid_label_2.setObjectName('mid_label')
+            self.right_layout.addWidget(self.lower_mid_label_2, 5, 2, 1, 1)
 
-    def route(self):
-        options = QFileDialog.Options()
+            return dict1
 
-        options |= QFileDialog.DontUseNativeDialog
-        files, _ = QFileDialog.getOpenFileNames(self, "QFileDialog.getOpenFileNames()", "",
-                                                "All Files (*);;Python Files (*.py)", options=options)
-        if files:
-            print("files", files)
-            str = ''.join(files)
-            print(str)
+    def treeview_Clicked(self):
 
-            # File Path
-            filePath = str
-            print(filePath)
+        print("clicked")
 
-            # file path shortened
-            _, fileName = os.path.split(str)
+    '''def treeview_Clicked(self, index):
+        importFile = global_filepath
+        _, importFileDisplay = os.path.split(importFile)
 
-            # entire path
-            global global_filepath
-            global_filepath = filePath
-            print("global filepath", global_filepath)
+        self.model = QStandardItemModel()
+        self.rootNode = self.model.invisibleRootItem()
+        self.branch1 = QStandardItem(importFileDisplay)
+        self.rootNode.appendRow([self.branch1, None])
+
+        self.treeview.setModel(self.model)
+        self.treeview.setAlternatingRowColors(True)
+        self.lower_mid_label_2 = QtWidgets.QLabel.clear(self.lower_mid_label_2)
+        lst = []
+        with open(importFile, 'r') as f:
+            for line in f.readlines():
+                line = line.strip()
+                score = line.split(":")
+                lst.append(score)
+                dict = {element[0]: element[1] for element in lst}
+                print(dict)
+            for k, v in dict.items():
+                self.branch1.appendRow(([QStandardItem(k), None]))
+                print("k",k)
+                print("v", v)
+                print("line", line)
+                print("score", score)
+                if k == score[0]:
+                        self.item = self.treeview.selectedIndexes()[::2]
+                        print(self.item.model().itemFromIndex(index).text())
+
+
+                global global_fileInfo
+                global_fileInfo = "   子物体贴图信息:" + v
+                print("value", v)
+                self.lower_mid_label_2 = QtWidgets.QLabel(global_fileInfo)
+                self.lower_mid_label_2.setObjectName('mid_label')
+                self.right_layout.addWidget(self.lower_mid_label_2, 5, 2, 1, 1)
+
+        print("treeview clicked")
+
+
+
+
+        global_modelTitle = "   模型子物体名称: " + fileName
+        self.lower_mid_label = QtWidgets.QLabel(global_modelTitle)
+
+        self.lower_mid_label.setObjectName('middle_label')
+        self.right_layout.addWidget(self.lower_mid_label, 4, 2, 1, 1)
+        '''
+
+    def get_value(self, key):
+        importFile = global_filepath
+        _, importFileDisplay = os.path.split(importFile)
+        lst = []
+        with open(importFile, 'r') as f:
+            for line in f.readlines():
+                line = line.strip()
+                score = line.split(":")
+                lst.append(score)
+                dict = {element[0]: element[1] for element in lst}
+
+                # print(dict)
+            for k, v in dict1.items():
+                if key == k:
+                    return v
 
 
 def main():
