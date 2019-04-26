@@ -27,23 +27,23 @@ class MainUi(QtWidgets.QMainWindow):
     def initUi(self):
 
         self.setFixedSize(1200, 800)
-        self.main_widget = QtWidgets.QWidget()  # 创建窗口主部件
-        self.main_layout = QtWidgets.QGridLayout()  # 创建主部件的网格布局
-        self.main_widget.setLayout(self.main_layout)  # 设置窗口主部件布局为网格布局
+        self.main_widget = QtWidgets.QWidget()
+        self.main_layout = QtWidgets.QGridLayout()
+        self.main_widget.setLayout(self.main_layout)
 
-        self.left_widget = QtWidgets.QWidget()  # 创建左侧部件
+        self.left_widget = QtWidgets.QWidget()
         self.left_widget.setObjectName('left_widget')
-        self.left_layout = QtWidgets.QGridLayout()  # 创建左侧部件的网格布局层
-        self.left_widget.setLayout(self.left_layout)  # 设置左侧部件布局为网格
+        self.left_layout = QtWidgets.QGridLayout()
+        self.left_widget.setLayout(self.left_layout)
 
-        self.right_widget = QtWidgets.QWidget()  # 创建右侧部件
+        self.right_widget = QtWidgets.QWidget()
         self.right_widget.setObjectName('right_widget')
         self.right_layout = QtWidgets.QGridLayout()
-        self.right_widget.setLayout(self.right_layout)  # 设置右侧部件布局为网格
+        self.right_widget.setLayout(self.right_layout)
 
-        self.main_layout.addWidget(self.left_widget, 2, 0, 12, 3)  # 左侧部件在第0行第0列，占8行3列
-        self.main_layout.addWidget(self.right_widget, 1, 5, 12, 10)  # 右侧部件在第0行第3列，占8行9列
-        self.setCentralWidget(self.main_widget)  # 设置窗口主部件
+        self.main_layout.addWidget(self.left_widget, 2, 0, 12, 3)
+        self.main_layout.addWidget(self.right_widget, 1, 5, 12, 10)
+        self.setCentralWidget(self.main_widget)
 
         self.treeview = QTreeView(self)
         self.left_layout.addWidget(self.treeview, 5, 0, 1, 3)
@@ -172,8 +172,8 @@ class MainUi(QtWidgets.QMainWindow):
 
         # LOWER RIGHT SECTION
 
-        self.right_playlist_widget = QtWidgets.QWidget()  # 播放歌单部件
-        self.right_playlist_layout = QtWidgets.QGridLayout()  # 播放歌单网格布局
+        self.right_playlist_widget = QtWidgets.QWidget()
+        self.right_playlist_layout = QtWidgets.QGridLayout()
         self.right_playlist_widget.setLayout(self.right_playlist_layout)
 
         self.lower_right_label = QtWidgets.QLabel("材料类型")
@@ -235,21 +235,19 @@ class MainUi(QtWidgets.QMainWindow):
             # File Path
             filePath = str
             print(filePath)
-            self.top_center = QtWidgets.QLabel.clear(self.top_center) #clear
+            self.top_center = QtWidgets.QLabel.clear(self.top_center)
             self.top_center = QtWidgets.QLabel(filePath)              #create
             self.top_center.setObjectName('mid_label')                #setParameter
             self.right_bar_layout.addWidget(self.top_center, 0, 0)
 
             # file path shortened
             _, fileName = os.path.split(str)
-            # print(fileName)
 
             # file name
             self.lower_mid_label = QtWidgets.QLabel.clear(self.lower_mid_label)
 
             global global_modelTitle
             global_modelTitle = "   模型子物体名称: " + fileName
-            #print(global_modelTitle)
             self.lower_mid_label = QtWidgets.QLabel(global_modelTitle)
 
             self.lower_mid_label.setObjectName('middle_label')
