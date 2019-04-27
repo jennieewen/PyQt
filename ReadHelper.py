@@ -27,6 +27,7 @@ class ReadHelper:
                 # print(v)
 
     def get_value(self, key):
+        n = 0
         for i in self.key_list:
             if i == key:
                 n = self.key_list.index(i)
@@ -34,6 +35,8 @@ class ReadHelper:
 
     def get_picUrl(self, key):
         return self.get_value(key)['url']
+
+
 
 
 
