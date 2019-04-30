@@ -123,8 +123,14 @@ class MainUi(QtWidgets.QMainWindow):
         self.lower_right_label = QtWidgets.QLabel("材料类型")
         self.lower_right_label.setObjectName('right_lable')
 
+
+
         self.lower_right_button_1 = QtWidgets.QPushButton("选择")
         self.lower_right_button_1.setObjectName('left_label')
+        self.right_layout.addWidget(self.lower_right_button_1, 6, 7, 1, 1)
+        self.lower_right_button_1.pressed.connect(self.selectMaterial)
+
+
 
         self.lower_right_bg = QtWidgets.QToolButton()
         self.lower_right_bg.setIconSize(QtCore.QSize(350, 200))  # 300, 200
@@ -150,6 +156,19 @@ class MainUi(QtWidgets.QMainWindow):
         # 其中tree_item_click是自己定义的槽函数
 
         self.show()
+
+    '''select material function'''
+    def selectMaterial(self):
+        options = QFileDialog.Options()
+
+        options |= QFileDialog.DontUseNativeDialog
+        files, _ = QFileDialog.getOpenFileNames(self, "QFileDialog.getOpenFileNames()", "",
+                                                "All Files (*);;Python Files (*.py)", options=options)
+
+        self.lower_right_icon.setIcon(QtGui.QIcon('./sq.jpg'))
+
+
+
 
     '''open file function'''
     def openFileNamesDialog(self):
