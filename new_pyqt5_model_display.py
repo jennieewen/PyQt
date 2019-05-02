@@ -22,16 +22,22 @@ class Example(QWidget):
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # prevents starttimer error
         self.setFixedSize(1200, 800)
 
-        self.b1 = QPushButton("open")
-        self.b2 = QPushButton("file path name")
-        self.b3 = QPushButton("save and exit")
-        self.b4 = QPushButton("tree")
+        self.button_open = QPushButton("打开文件")
+        self.path_edit = QLineEdit()
+        self.path_edit.setText("/sdfsdf")
+        # self.path_edit.setDisabled(True) # 无法选中和编辑
+
+        self.b3 = QPushButton("保存并退出")
 
         self.h_box1 = QHBoxLayout()
-        # h_box1.addStretch(1)
-        self.h_box1.addWidget(self.b1)
-        self.h_box1.addWidget(self.b2)
+        # self.h_box1.addStretch(1)
+        self.h_box1.addWidget(self.button_open)
+        self.h_box1.addStretch(1)
+        self.h_box1.addWidget(self.path_edit,5)
+        self.h_box1.addStretch(1)
         self.h_box1.addWidget(self.b3)
+        # self.h_box1.addStretch(1)
+
 
         self.h_box2 = QHBoxLayout()
         self.g_tree = QtWidgets.QGridLayout()
@@ -83,13 +89,13 @@ class Example(QWidget):
         self.setLayout(self.main_box)
 
         self.tree_widget = QTreeWidget(self)
-        self.g_tree.addWidget(self.tree_widget, 0, 0, 1, 2)
+        self.g_tree.addWidget(self.tree_widget, 5, 0, 1, 2)
         self.tree_widget.header().setVisible(False)
 
         # CONNECT FUNCTION PART
 
         self.button_choose.pressed.connect(self.selectMaterial)
-        self.b1.pressed.connect(self.openFileNamesDialog)
+        self.button_open.pressed.connect(self.openFileNamesDialog)
         self.tree_widget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
         # # 其中tree_item_click是自己定义的槽函数
 
