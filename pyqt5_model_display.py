@@ -18,12 +18,9 @@ global_rh = None
 class MainUi(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        self.initUi()
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # prevents starttimer error
-
-    def initUi(self):
-
         self.setFixedSize(1200, 800)
+
         self.main_widget = QtWidgets.QWidget()
         self.main_layout = QtWidgets.QGridLayout()
         self.main_widget.setLayout(self.main_layout)
@@ -42,29 +39,30 @@ class MainUi(QtWidgets.QMainWindow):
         self.main_layout.addWidget(self.right_widget, 1, 5, 12, 10)
         self.setCentralWidget(self.main_widget)
 
-
         self.right_bar_widget = QtWidgets.QWidget()  # 右侧顶部搜索框部件
         self.right_bar_layout = QtWidgets.QGridLayout()  # 右侧顶部搜索框网格布局
         self.right_bar_widget.setLayout(self.right_bar_layout)
 
-        self.left_top_button = QtWidgets.QPushButton("打开文件")
-        self.left_top_button.setObjectName('top_label')
-        self.main_layout.addWidget(self.left_top_button, 1, 0, 1, 3)
-        self.left_top_button.pressed.connect(self.openFileNamesDialog)
+        self.top_left_button = QtWidgets.QPushButton("打开文件tst")
+        self.top_left_button.setObjectName('top_label')
+        self.right_bar_layout.addWidget(self.top_left_button, 1, 0, 1, 3)
 
         self.top_center_bg = QtWidgets.QToolButton()
         self.top_center_bg.setIconSize(QtCore.QSize(600, 27))  # 300, 200
-        self.right_bar_layout.addWidget(self.top_center_bg, 0, 0)
+        self.right_bar_layout.addWidget(self.top_center_bg, 0, 5)
 
-        self.top_center = QtWidgets.QLabel(" FILE NAME HERE")
+        self.top_center = QtWidgets.QLabel("")
         self.top_center.setObjectName('mid_label')
         self.right_bar_layout.addWidget(self.top_center, 0, 0)
 
         self.top_right_button = QtWidgets.QPushButton("保存与退出")
+        self.top_right_button.setIconSize(QtCore.QSize(30, 27))  # 300, 200
         self.top_right_button.setObjectName('top_label')
+
         self.right_bar_widget.setLayout(self.right_bar_layout)
         self.right_bar_layout.addWidget(self.top_right_button, 0, 7, 0, 3)
         self.right_bar_widget_search_input = QtWidgets.QLabel()
+
         self.right_layout.addWidget(self.right_bar_widget_search_input, 5, 7, 1, 1)
         self.right_bar_layout.addWidget(self.right_bar_widget_search_input, 0, 1, 1, 8)
         self.right_layout.addWidget(self.right_bar_widget, 0, 0, 1, 9)
@@ -112,20 +110,12 @@ class MainUi(QtWidgets.QMainWindow):
         self.lower_right_label.setObjectName('right_lable')
         print(global_mat_type)
 
-
         self.lower_right_button_1 = QtWidgets.QPushButton("选择")
         self.lower_right_button_1.setObjectName('left_label')
         self.right_layout.addWidget(self.lower_right_button_1, 6, 7, 1, 1)
-        self.lower_right_button_1.pressed.connect(self.selectMaterial)
-
-
 
         self.lower_right_bg = QtWidgets.QToolButton()
         self.lower_right_bg.setIconSize(QtCore.QSize(350, 200))  # 300, 200
-
-        '''self.lower_right_icon = QtWidgets.QToolButton()
-        self.lower_right_icon.setIcon(QtGui.QIcon('./sq.jpg'))
-        self.lower_right_icon.setIconSize(QtCore.QSize(180, 200))'''
 
         self.lower_right_icon = QtWidgets.QToolButton()
         self.lower_right_icon.setIcon(QtGui.QIcon(global_fileContent))  # 设置按钮图标
@@ -140,12 +130,16 @@ class MainUi(QtWidgets.QMainWindow):
         self.right_layout.addWidget(self.lower_right_label, 5, 7, 1, 1)
         self.right_layout.addWidget(self.lower_right_button_1, 6, 7, 1, 1)
 
-        self.treewidget = QTreeWidget(self)
-        self.left_layout.addWidget(self.treewidget, 5, 0, 1, 3)
-        self.treewidget.header().setVisible(False)
+        self.tree_widget = QTreeWidget(self)
+        self.left_layout.addWidget(self.tree_widget, 5, 0, 1, 3)
+        self.tree_widget.header().setVisible(False)
 
-        self.treewidget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
-        # 其中tree_item_click是自己定义的槽函数
+        # CONNECT FUNCTION PART
+
+        self.lower_right_button_1.pressed.connect(self.selectMaterial)
+        self.top_left_button.pressed.connect(self.openFileNamesDialog)
+        self.tree_widget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
+        # # 其中tree_item_click是自己定义的槽函数
 
         self.show()
 
@@ -173,8 +167,6 @@ class MainUi(QtWidgets.QMainWindow):
         self.lower_right_label = QtWidgets.QLabel("      材料类型: \n" + "     " + global_mat_type)
         self.lower_right_label.setObjectName('right_lable')
         self.right_layout.addWidget(self.lower_right_label, 5, 7, 1, 1)
-
-
 
     '''open file function'''
     def openFileNamesDialog(self):
@@ -205,23 +197,23 @@ class MainUi(QtWidgets.QMainWindow):
             self.right_layout.addWidget(self.lower_mid_label, 4, 2, 1, 1)
 
             # clear last time
-            self.lower_mid_label_2 = QtWidgets.QLabel.clear(self.lower_mid_label_2)
-            self.treewidget = QtWidgets.QTreeWidget.clear(self.treewidget)  # QTreeWidgetItem object: root
+            QtWidgets.QLabel.clear(self.lower_mid_label_2)
+            # QtWidgets.QTreeWidget.clear(self.tree_widget)  # QTreeWidgetItem object: root
 
-            self.treewidget = QTreeWidget(self)
-            self.left_layout.addWidget(self.treewidget, 5, 0, 1, 3)
-            self.treewidget.header().setVisible(False)
+            self.tree_widget = QTreeWidget(self)
+            self.left_layout.addWidget(self.tree_widget, 5, 0, 1, 3)
+            self.tree_widget.header().setVisible(False)
 
-            self.treewidget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
+            self.tree_widget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
             # 其中tree_item_click是自己定义的槽函数
 
             # QTreeWidget add data
-            self.treewidget.setAlternatingRowColors(True)
+            self.tree_widget.setAlternatingRowColors(True)
 
             key_list = rh.key_list
             print(key_list)
 
-            root = QtWidgets.QTreeWidgetItem(self.treewidget)  # QTreeWidgetItem object: root
+            root = QtWidgets.QTreeWidgetItem(self.tree_widget)  # QTreeWidgetItem object: root
             root.setText(0, rh.name)  # set text of root
 
             for i in range(len(key_list)):
@@ -233,7 +225,7 @@ class MainUi(QtWidgets.QMainWindow):
             self.lower_mid_label_2.setObjectName('mid_label')
             self.right_layout.addWidget(self.lower_mid_label_2, 5, 2, 1, 1)
 
-
+    '''choose tree_item function'''
     def tree_item_click(self, item, n):
         global global_rh
         it = item.text(n)
