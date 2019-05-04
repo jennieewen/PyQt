@@ -229,6 +229,7 @@ class MainUi(QtWidgets.QMainWindow):
     def tree_item_click(self, item, n):
         global global_rh
         it = item.text(n)
+        it.setObjectName('smallest_font')
         print(it)
         # file name
         self.lower_mid_label.setText("   模型子物体名称: " + it)

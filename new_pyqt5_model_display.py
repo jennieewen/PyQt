@@ -58,16 +58,36 @@ class Example(QWidget):
 
         self.h_bottom_box.addLayout(self.v_bottom_box_left)
 
-        self.sub_model_name = QtWidgets.QLabel("""    
-        
-        模型子物体名称:""")
-        self.sub_model_infos = QtWidgets.QLabel("""   
+        self.sub_model_name = QtWidgets.QLabel("    模型子物体名称:")
+        self.sub_model_name.setObjectName("text_label")
+
+        self.sub_model_name_name = QtWidgets.QLabel("")
+
+        self.sub_model_name_name.setObjectName("label_name")
+
+        self.sub_model_infos = QtWidgets.QLabel(""" 
         
         子物体贴图信息:""")
+
+        self.sub_model_infos.setObjectName("text_label")
+
+        self.sub_model_info_info = QtWidgets.QLabel("")
+        self.sub_model_info_info.setObjectName("info_name")
+
+
+        self.h_bottom_box_left_modelname = QHBoxLayout()
+
         # self.v_bottom_box_left.addStretch(1)
-        self.v_bottom_box_left.addWidget(self.sub_model_name)
+        self.v_bottom_box_left.addLayout(self.h_bottom_box_left_modelname)
+        self.h_bottom_box_left_modelname.addWidget(self.sub_model_name)
+        self.h_bottom_box_left_modelname.addWidget(self.sub_model_name_name)
+
+
+        self.h_bottom_box_left_modelinfo = QHBoxLayout()
         # self.v_bottom_box_left.addStretch(1)
-        self.v_bottom_box_left.addWidget(self.sub_model_infos)
+        self.v_bottom_box_left.addLayout(self.h_bottom_box_left_modelinfo)
+        self.h_bottom_box_left_modelinfo.addWidget(self.sub_model_infos)
+        self.h_bottom_box_left_modelinfo.addWidget(self.sub_model_info_info)
         self.v_bottom_box_left.addStretch(7)
 
         # 选择材质 模块
@@ -79,6 +99,8 @@ class Example(QWidget):
 
         self.h_bottom_box.addLayout(self.v_bottom_box_right)
         self.lower_right_label = QtWidgets.QLabel("      材质类型:")
+        self.lower_right_label.setObjectName("text_label")
+
         self.v_bottom_box_right.addStretch(2)
         self.v_bottom_box_right.addWidget(self.lower_right_label)
         self.v_bottom_box_right.addStretch(11)
@@ -162,14 +184,10 @@ class Example(QWidget):
         it = item.text(n)
         print(it)
         # file name
-        self.sub_model_name.setText("""    
-        
-        模型子物体名称 : """ + it)
+        self.sub_model_name_name.setText(it)
         values = global_rh.get_value(it)
         print(values)
-        details = """    
-        
-        子物体贴图信息 : """
+        details = ''
         flag = True
         for k, v in values.items():
             print(k, v)
@@ -183,7 +201,7 @@ class Example(QWidget):
             details += v
 
         print(details)
-        self.sub_model_infos.setText(details)
+        self.sub_model_info_info.setText(details)
 
     '''select material function'''
     def select_material(self):
@@ -233,5 +251,7 @@ if __name__ == '__main__':
     ex = Example()
     style_sheet = ex.read_qss('./style.qss')
     ex.setStyleSheet(style_sheet)
+    jenny_style_sheet = ex.read_qss('./jenny_style.qss')
+    ex.setStyleSheet(jenny_style_sheet)
     ex.show()
     sys.exit(app.exec_())
