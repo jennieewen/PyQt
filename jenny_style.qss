@@ -1,0 +1,30 @@
+/*
+qss file
+by jenny 05/05/2019
+ */
+
+#text_label{
+    font-family: "Microsoft YaHei";
+    font-size: 22px;
+    font-weight: bold;
+    color: #333333;
+}
+
+#sm_text_label {
+    font-family: "Microsoft YaHei";
+    font-size: 18px;
+    font-weight: bold;
+    color: #333333;
+}
+
+QLabel {
+    qproperty-alignment: AlightRight;
+}
+
+#label_name {
+    text-align: right;
+    font-family: "Microsoft YaHei";
+    font-size: 22px;
+    font-weight: bold;
+    color: dodgerblue;
+}
