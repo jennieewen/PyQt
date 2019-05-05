@@ -1,7 +1,37 @@
-
-
-QPushButton {
-    background-color:lightseagreen;
+/*
+qss file
+by wmxl
+ */
+QPushButton{
+    height: 35px;
+    background-color:#16A085;
+    color:#ffffff;
+    font-size:15px;
+    font-family: "Microsoft YaHei";
+    font-weight: 600;
+    border: none;
 }
 
+QPushButton:hover {
+    background-color:#333333;
+}
+#exit{
+    width: 100px;
+    background-color:cornflowerblue;
+}
+#exit:hover{
+    background-color:#333333;
+}
+#open{
+    width: 160px;
+}
+#open:hover{
+    background-color:#333333;
+}
+#choose{
+    width: 60px;
+}
+#choose:hover{
+    background-color:#333333;
+}
 

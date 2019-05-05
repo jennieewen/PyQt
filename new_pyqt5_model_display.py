@@ -19,12 +19,14 @@ class Example(QWidget):
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # prevents starttimer error
         self.setFixedSize(1200, 800)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
 
         self.button_open = QPushButton("打开FBX模型文件")
+        self.button_open.setObjectName("open")
         self.path_edit = QLineEdit()
         # self.path_edit.setDisabled(True) # 无法选中和编辑
-
         self.button_exit = QPushButton("保存并退出")
+        self.button_exit.setObjectName("exit")
 
         self.h_box1 = QHBoxLayout()
         # self.h_box1.addStretch(1)
@@ -81,6 +83,7 @@ class Example(QWidget):
         self.v_bottom_box_right.addWidget(self.lower_right_label)
         self.v_bottom_box_right.addStretch(11)
         self.button_choose = QtWidgets.QPushButton("选择")
+        self.button_choose.setObjectName("choose")
         self.v_bottom_box_right.addWidget(self.button_choose)
         self.v_bottom_box_right.addStretch(2)
 
@@ -103,6 +106,16 @@ class Example(QWidget):
         self.tree_widget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
         # # 其中tree_item_click是自己定义的槽函数
         self.button_exit.clicked.connect(self.on_button_click)
+
+        # # FONT
+        #
+        # font = QtGui.QFont()
+        # font.setFamily('微软雅黑')
+        # font.setBold(True)
+        # font.setPointSize(13)
+        # font.setWeight(75)
+        #
+        # self.button_exit.setFont(font)
 
     '''open file function'''
     def open_file_names_dialog(self):
@@ -189,11 +202,23 @@ class Example(QWidget):
         ''' + file_name)
 
     def on_button_click(self):
-        # sender 是发送信号的对象，此处发送信号的对象是button1按钮
-        sender = self.sender()
-        print(sender.text() + ' 被按下了')
         qApp = QApplication.instance()
         qApp.quit()
+
+    # 支持窗口拖动,重写两个方法
+    def mousePressEvent(self, event):
+        if event.button() == QtCore.Qt.LeftButton:
+            self.m_drag = True
+            self.m_DragPosition = event.globalPos() - self.pos()
+            event.accept()
+
+    def mouseMoveEvent(self, QMouseEvent):
+        if QMouseEvent.buttons() and QtCore.Qt.LeftButton:
+            self.move(QMouseEvent.globalPos() - self.m_DragPosition)
+            QMouseEvent.accept()
+
+    def mouseReleaseEvent(self, QMouseEvent):
+        self.m_drag = False
 
     '''read qss file'''
     @staticmethod
