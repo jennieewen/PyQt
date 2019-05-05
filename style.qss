@@ -1,10 +1,10 @@
 /*
 qss file
-by wmxl
+by wmxl 05/05/2019
  */
 QPushButton{
     height: 35px;
-    background-color:#16A085;
+    background-color:#90D68A;
     color:#ffffff;
     font-size:15px;
     font-family: "Microsoft YaHei";
@@ -17,7 +17,7 @@ QPushButton:hover {
 }
 #exit{
     width: 100px;
-    background-color:cornflowerblue;
+    background-color:#007CB0;
 }
 #exit:hover{
     background-color:#333333;
