@@ -19,7 +19,7 @@ class Example(QWidget):
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # prevents starttimer error
         self.setFixedSize(1200, 800)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
+        # self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
 
         self.button_open = QPushButton("打开FBX模型文件")
         self.button_open.setObjectName("open")
@@ -47,8 +47,10 @@ class Example(QWidget):
         self.lg_pic.setIcon(QtGui.QIcon("./bird.jpg"))  # 设置按钮图标
         self.lg_pic.setIconSize(QtCore.QSize(900, 450))
         self.v_box.addWidget(self.lg_pic)
-
         self.h_box2.addLayout(self.v_box)
+
+        with open('./style.qss', 'r') as f:
+            self.button_exit.setStyleSheet(f.read())
 
         self.h_bottom_box = QHBoxLayout()
         self.v_box.addLayout(self.h_bottom_box)
@@ -96,8 +98,31 @@ class Example(QWidget):
         self.setLayout(self.main_box)
 
         self.tree_widget = QTreeWidget(self)
+        self.tree_widget.setObjectName("tree")
         self.g_tree.addWidget(self.tree_widget, 5, 0, 1, 2)
         self.tree_widget.header().setVisible(False)
+
+        self.tree_widget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
+        # # 其中tree_item_click是自己定义的槽函数
+
+
+        # test tree style (need delete later)
+
+        str_path = "./a.txt"
+        rh = ReadHelper(str_path)
+        global global_rh
+        global_rh = rh
+        key_list = rh.key_list
+        print(key_list)
+
+        root = QtWidgets.QTreeWidgetItem(self.tree_widget)  # QTreeWidgetItem object: root
+        root.setText(0, rh.name)  # set text of root
+
+        for i in range(len(key_list)):
+            child = QtWidgets.QTreeWidgetItem(root)  # child of root
+            child.setText(0, key_list[i])
+
+        # test tree style end
 
         # CONNECT FUNCTION PART
 
@@ -232,6 +257,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Example()
     style_sheet = ex.read_qss('./style.qss')
-    ex.setStyleSheet(style_sheet)
+    # ex.setStyleSheet(style_sheet)
     ex.show()
     sys.exit(app.exec_())

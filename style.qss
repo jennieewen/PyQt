@@ -35,3 +35,11 @@ QPushButton:hover {
     background-color:#333333;
 }
 
+#tree{
+    color:#ffffff;
+    font-size:30px;
+    font-family: "Microsoft YaHei";
+    font-weight: 600;
+    border: none;
+    background-color: #AAA;
+}
