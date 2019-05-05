@@ -24,7 +24,7 @@ class Example(QWidget):
         self.path_edit = QLineEdit()
         # self.path_edit.setDisabled(True) # 无法选中和编辑
 
-        self.b3 = QPushButton("保存并退出")
+        self.button_exit = QPushButton("保存并退出")
 
         self.h_box1 = QHBoxLayout()
         # self.h_box1.addStretch(1)
@@ -32,7 +32,7 @@ class Example(QWidget):
         self.h_box1.addStretch(1)
         self.h_box1.addWidget(self.path_edit, 8)
         self.h_box1.addStretch(1)
-        self.h_box1.addWidget(self.b3)
+        self.h_box1.addWidget(self.button_exit)
         # self.h_box1.addStretch(1)
 
         self.h_box2 = QHBoxLayout()
@@ -102,8 +102,7 @@ class Example(QWidget):
         self.button_open.pressed.connect(self.open_file_names_dialog)
         self.tree_widget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
         # # 其中tree_item_click是自己定义的槽函数
-
-        self.show()
+        self.button_exit.clicked.connect(self.on_button_click)
 
     '''open file function'''
     def open_file_names_dialog(self):
@@ -189,9 +188,25 @@ class Example(QWidget):
         self.lower_right_label.setText('''      材质类型: 
         ''' + file_name)
 
+    def on_button_click(self):
+        # sender 是发送信号的对象，此处发送信号的对象是button1按钮
+        sender = self.sender()
+        print(sender.text() + ' 被按下了')
+        qApp = QApplication.instance()
+        qApp.quit()
+
+    '''read qss file'''
+    @staticmethod
+    def read_qss(style):
+        with open(style, 'r') as f:
+            return f.read()
+
 
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     ex = Example()
+    style_sheet = ex.read_qss('./style.qss')
+    ex.setStyleSheet(style_sheet)
+    ex.show()
     sys.exit(app.exec_())
