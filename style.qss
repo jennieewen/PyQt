@@ -53,3 +53,48 @@ QPushButton:hover {
 #tree:hover{
     color:lawngreen;
 }
+
+#text_label{
+    text-align: right;
+    font-family: "Microsoft YaHei";
+    font-size: 22px;
+    font-weight: bold;
+    color: #3c3d3d;
+}
+
+#text_label_2{
+    text-align: right;
+    font-family: "Microsoft YaHei";
+    font-size: 18px;
+    font-weight: bold;
+    color: #3c3d3d;
+}
+
+#text_label_detail{
+    font-family: "Microsoft YaHei";
+    font-size: 18px;
+    font-weight: bold;
+    color: #a1a3a3;
+}
+
+
+#smallest_font{
+    font-family: "Microsoft YaHei";
+    font-size: 18px;
+    font-weight: bold;
+    color: #60AAE6;
+
+}
+
+#label_name {
+    text-align: right;
+    font-family: "Microsoft YaHei";
+    font-size: 22px;
+    font-weight: bold;
+    color: #60AAE6;
+}
+
+#info_name {
+   font-family: "Microsoft YaHei";
+    font-size: 12px;
+    color: #a1a3a3; }

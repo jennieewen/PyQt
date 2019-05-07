@@ -2,12 +2,11 @@
 # -*- coding: utf-8 -*-
 """
 new UI
-Author: wmxl
+Authors: Jennieewen & wmxl
 Last edited: April 30 2019
 """
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
-
 from PyQt5.QtWidgets import *
 import os
 from ReadHelper import ReadHelper
@@ -63,30 +62,25 @@ class Example(QWidget):
         self.h_bottom_box_right_widget.setLayout(self.h_bottom_box_right)
         self.v_bottom_box_left_widget.setLayout(self.v_bottom_box_left)
 
-
         self.h_bottom_box.addWidget(self.v_bottom_box_left_widget)
 
-        self.sub_model_name = QtWidgets.QLabel("    模型子物体名称:")
+        self.sub_model_name = QtWidgets.QLabel('      模型子物体名称 :')
         self.sub_model_name.setObjectName("text_label")
 
         self.sub_model_name_name = QtWidgets.QLabel("")
-
         self.sub_model_name_name.setObjectName("label_name")
 
-        self.sub_model_infos = QtWidgets.QLabel(""" 
-        
-        子物体贴图信息:""")
+        self.sub_model_infos = QtWidgets.QLabel('         子物体贴图信息 :')
 
-        self.sub_model_infos.setObjectName("text_label")
+        self.sub_model_infos.setObjectName("text_label_2")
 
         self.sub_model_info_info = QtWidgets.QLabel("")
         self.sub_model_info_info.setObjectName("info_name")
 
         # 名称信息 模块
-
         self.h_bottom_box_left_modelname = QHBoxLayout()
 
-        # self.v_bottom_box_left.addStretch(1)
+        # self.v_bottom_box_left.addStretch(80)
         self.v_bottom_box_left.addLayout(self.h_bottom_box_left_modelname)
         self.h_bottom_box_left_modelname.addWidget(self.sub_model_name)
         self.h_bottom_box_left_modelname.addWidget(self.sub_model_name_name)
@@ -96,7 +90,7 @@ class Example(QWidget):
         self.v_bottom_box_left.addLayout(self.h_bottom_box_left_modelinfo)
         self.h_bottom_box_left_modelinfo.addWidget(self.sub_model_infos)
         self.h_bottom_box_left_modelinfo.addWidget(self.sub_model_info_info)
-        self.v_bottom_box_left.addStretch(7)
+        ##self.v_bottom_box_left.addStretch(7)
 
         # 选择材质 模块
 
@@ -105,15 +99,20 @@ class Example(QWidget):
         self.lower_right_icon.setIconSize(QtCore.QSize(180, 180))  # 设置图标大小
         self.h_bottom_box_right.addWidget(self.lower_right_icon)
 
+
         self.h_bottom_box.addWidget(self.h_bottom_box_right_widget)
-        self.lower_right_label = QtWidgets.QLabel("      材质类型:")
+        self.lower_right_label = QtWidgets.QLabel("      材质类型 :")
         self.lower_right_label.setObjectName("text_label")
+        self.lower_right_label_detail = QtWidgets.QLabel("")
+        self.lower_right_label_detail.setObjectName("text_label_detail")
 
         self.v_bottom_box_right = QVBoxLayout()
         self.h_bottom_box_right.addLayout(self.v_bottom_box_right)
 
         self.v_bottom_box_right.addStretch(2)
         self.v_bottom_box_right.addWidget(self.lower_right_label)
+        self.v_bottom_box_right.addWidget(self.lower_right_label_detail)
+
         self.v_bottom_box_right.addStretch(11)
         self.button_choose = QtWidgets.QPushButton("选 择")
         self.button_choose.setObjectName("choose")
@@ -141,7 +140,7 @@ class Example(QWidget):
 
         self.tree_widget_header = self.tree_widget.header()
         self.tree_widget_header.setVisible(False)
-        self.g_tree.addWidget(self.tree_widget, 5, 0, 1, 2)
+        self.g_tree.addWidget(self.tree_widget, 0, 0, 1, 2)
 
         # test tree style (need delete later)
 
@@ -153,7 +152,10 @@ class Example(QWidget):
         # print(key_list)
 
         self.root = QtWidgets.QTreeWidgetItem(self.tree_widget)  # QTreeWidgetItem object: self.root
-        self.root.setIcon(0, QtGui.QIcon("./bear.jpg"))
+
+        ##self.root.setIcon(0, QtGui.QIcon("icons/down_arrow.png"))
+        self.root.setIcon(0, QtGui.QIcon("icons/closed_folder.png"))
+
 
         self.root.setText(0, rh.name)  # set text of self.root
         col = QColor(0, 124, 176)  # 0 124 176 blue
@@ -176,10 +178,12 @@ class Example(QWidget):
 
         # CONNECT FUNCTION PART
         self.button_open.pressed.connect(self.open_file_names_dialog)
+        self.button_choose.pressed.connect(self.select_material)
         self.tree_widget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
         # # 其中tree_item_click是自己定义的槽函数
         self.tree_widget.itemSelectionChanged.connect(self.tree_item_change)
         self.tree_widget.setRootIsDecorated(False)
+
 
     '''open file function'''
     def open_file_names_dialog(self):
@@ -226,8 +230,15 @@ class Example(QWidget):
             print("root")
             if item.isExpanded():
                 self.tree_widget.collapseItem(item)
+                self.root.setIcon(0, QtGui.QIcon("icons/closed_folder.png"))
+                myAc = QWidget.QAction(self.root)
+                myAc = setIcon(QtGui.QIcon("icons/closed_folder.png"))
+                self.root.addAction(myAc, QtWidgets.QTreeWidgetItem.TrailingPosition)
+
             else:
                 self.tree_widget.expandItem(item)
+                self.root.setIcon(0, QtGui.QIcon("icons/open_folder.png"))
+
         else:
             global global_rh
             # print(n)
@@ -243,17 +254,17 @@ class Example(QWidget):
             details = ''
             flag = True
             for k, v in values.items():
-                # print(k, v)
+                details += "\n"
+                print("kv: " + k, v)
                 if flag:
                     flag = False
                 else:
-                    details += """ 
-                                      """
+                    pass
                 details += k
                 details += ' : '
                 details += v
 
-            # print(details)
+            print(details)
             self.sub_model_info_info.setText(details)
 
     '''select change function'''
@@ -278,8 +289,9 @@ class Example(QWidget):
             _, file_name = os.path.split(str_path)
 
         self.lower_right_icon.setIcon(QtGui.QIcon(str_path))  # 设置按钮图标
-        self.lower_right_label.setText('''      材质类型: 
-        ''' + file_name)
+        self.lower_right_label.setText("      材质类型 : ")
+
+        self.lower_right_label_detail.setText("         " + file_name)
 
     def on_button_click(self):
         q = QApplication.instance()
@@ -316,5 +328,3 @@ if __name__ == '__main__':
     ex.show()
     sys.exit(app.exec_())
 
-
-    # stupid
