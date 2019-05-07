@@ -1,24 +1,71 @@
 /*
 qss file
-by jenny 05/05/2019
+by wmxl 05/05/2019
  */
+QPushButton{
+    height: 35px;
+    background-color:#90D68A;
+    color:#ffffff;
+    font-size:15px;
+    font-family: "Microsoft YaHei";
+    font-weight: 600;
+    border: none;
+}
+
+QPushButton:hover {
+    background-color:#333333;
+}
+#exit{
+    width: 100px;
+    background-color:#007CB0;
+}
+#exit:hover{
+    background-color:#333333;
+}
+#open{
+    width: 160px;
+}
+#open:hover{
+    background-color:#333333;
+}
+#choose{
+    width: 60px;
+}
+#choose:hover{
+    background-color:#333333;
+}
+
 
 #text_label{
+    text-align: right;
     font-family: "Microsoft YaHei";
     font-size: 22px;
     font-weight: bold;
-    color: #333333;
+    color: #3c3d3d;
 }
 
-#sm_text_label {
+#text_label_2{
+    text-align: right;
     font-family: "Microsoft YaHei";
     font-size: 18px;
     font-weight: bold;
-    color: #333333;
+    color: #3c3d3d;
 }
 
-QLabel {
-    qproperty-alignment: AlightRight;
+#text_label_detail{
+    font-family: "Microsoft YaHei";
+    font-size: 18px;
+    font-weight: bold;
+    color: #a1a3a3;
+}
+
+
+#smallest_font{
+    font-family: "Microsoft YaHei";
+    font-size: 18px;
+    font-weight: bold;
+    color: #60AAE6;
+
 }
 
 #label_name {
@@ -26,5 +73,10 @@ QLabel {
     font-family: "Microsoft YaHei";
     font-size: 22px;
     font-weight: bold;
-    color: dodgerblue;
+    color: #60AAE6;
 }
+
+#info_name {
+   font-family: "Microsoft YaHei";
+    font-size: 12px;
+    color: #a1a3a3; }

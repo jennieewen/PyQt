@@ -58,7 +58,7 @@ class Example(QWidget):
 
         self.h_bottom_box.addLayout(self.v_bottom_box_left)
 
-        self.sub_model_name = QtWidgets.QLabel("    模型子物体名称:")
+        self.sub_model_name = QtWidgets.QLabel("\n" + '      模型子物体名称:')
         self.sub_model_name.setObjectName("text_label")
 
         self.sub_model_name_name = QtWidgets.QLabel("")
@@ -69,7 +69,7 @@ class Example(QWidget):
         
         子物体贴图信息:""")
 
-        self.sub_model_infos.setObjectName("text_label")
+        self.sub_model_infos.setObjectName("text_label_2")
 
         self.sub_model_info_info = QtWidgets.QLabel("")
         self.sub_model_info_info.setObjectName("info_name")
@@ -84,10 +84,14 @@ class Example(QWidget):
 
 
         self.h_bottom_box_left_modelinfo = QHBoxLayout()
+        self.h2_bottom_box_left_modelinfo = QHBoxLayout()
+
         # self.v_bottom_box_left.addStretch(1)
         self.v_bottom_box_left.addLayout(self.h_bottom_box_left_modelinfo)
+        self.v_bottom_box_left.addLayout(self.h2_bottom_box_left_modelinfo)
+
         self.h_bottom_box_left_modelinfo.addWidget(self.sub_model_infos)
-        self.h_bottom_box_left_modelinfo.addWidget(self.sub_model_info_info)
+        self.h2_bottom_box_left_modelinfo.addWidget(self.sub_model_info_info)
         self.v_bottom_box_left.addStretch(7)
 
         # 选择材质 模块
@@ -98,11 +102,16 @@ class Example(QWidget):
         self.h_bottom_box.addWidget(self.lower_right_icon)
 
         self.h_bottom_box.addLayout(self.v_bottom_box_right)
-        self.lower_right_label = QtWidgets.QLabel("      材质类型:")
+        self.lower_right_label = QtWidgets.QLabel("      材质类型 : ")
         self.lower_right_label.setObjectName("text_label")
+        self.lower_right_label_detail= QtWidgets.QLabel("")
+        self.lower_right_label_detail.setObjectName("text_label_detail")
+
 
         self.v_bottom_box_right.addStretch(2)
         self.v_bottom_box_right.addWidget(self.lower_right_label)
+        self.v_bottom_box_right.addWidget(self.lower_right_label_detail)
+
         self.v_bottom_box_right.addStretch(11)
         self.button_choose = QtWidgets.QPushButton("选择")
         self.button_choose.setObjectName("choose")
@@ -184,23 +193,25 @@ class Example(QWidget):
         it = item.text(n)
         print(it)
         # file name
-        self.sub_model_name_name.setText(it)
+        self.sub_model_name_name.setText("\n" + it)
         values = global_rh.get_value(it)
         print(values)
-        details = ''
+        details = ''' '''
         flag = True
         for k, v in values.items():
-            print(k, v)
+            details += """ 
+             """
+            print("kv: " + k, v)
             if flag:
                 flag = False
             else:
-                details += """ 
-                                  """
+                pass
             details += k
             details += ' : '
             details += v
-
-        print(details)
+            details += "\n"
+            print("det: " + details)
+        print("details: " +details)
         self.sub_model_info_info.setText(details)
 
     '''select material function'''
@@ -216,8 +227,9 @@ class Example(QWidget):
             _, file_name = os.path.split(str_path)
 
         self.lower_right_icon.setIcon(QtGui.QIcon(str_path))  # 设置按钮图标
-        self.lower_right_label.setText('''      材质类型: 
-        ''' + file_name)
+        self.lower_right_label.setText("      材质类型 : ")
+
+        self.lower_right_label_detail.setText("         " + file_name)
 
     def on_button_click(self):
         qApp = QApplication.instance()
