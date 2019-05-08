@@ -1,0 +1,26 @@
+/*
+qss file
+by wmxl 05/05/2019
+ */
+*{
+    background-color:#ffffff;
+}
+QPushButton{
+    height: 35px;
+    background-color:#90D68A;
+    color:#ffffff;
+    font-size:15px;
+    font-family: "Microsoft YaHei";
+    font-weight: 600;
+    border: none;
+}
+
+QPushButton:hover {
+    background-color:#333333;
+}
+
+#choose{
+    font-size:18px;
+    margin-left: auto;
+    margin-right: auto;
+}
