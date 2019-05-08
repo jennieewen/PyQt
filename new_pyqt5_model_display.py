@@ -315,3 +315,6 @@ if __name__ == '__main__':
     ex.setStyleSheet(style_sheet)
     ex.show()
     sys.exit(app.exec_())
+
+
+    # stupid
