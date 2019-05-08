@@ -1,179 +1,214 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-"""
-new UI
-Author: wmxl
-Last edited: April 30 2019
-"""
 from PyQt5 import QtCore, QtGui, QtWidgets
-import sys
-from PyQt5.QtWidgets import *
 import os
+import qtawesome
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 from ReadHelper import ReadHelper
 
+global global_fileContent
+global global_modelTitle
+global global_rh
 
-class Example(QWidget):
+global_fileContent = './dog.jpg'
+global_modelTitle = ""
+global_mat_type = ""
+global_rh = None
 
+
+class MainUi(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # prevents starttimer error
         self.setFixedSize(1200, 800)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
 
-        self.button_open = QPushButton("打开FBX模型文件")
-        self.button_open.setObjectName("open")
-        self.path_edit = QLineEdit()
-        # self.path_edit.setDisabled(True) # 无法选中和编辑
-        self.button_exit = QPushButton("保存并退出")
-        self.button_exit.setObjectName("exit")
+        self.main_widget = QtWidgets.QWidget()
+        self.main_layout = QtWidgets.QGridLayout()
+        self.main_widget.setLayout(self.main_layout)
 
-        self.h_box1 = QHBoxLayout()
-        # self.h_box1.addStretch(1)
-        self.h_box1.addWidget(self.button_open)
-        self.h_box1.addStretch(1)
-        self.h_box1.addWidget(self.path_edit, 8)
-        self.h_box1.addStretch(1)
-        self.h_box1.addWidget(self.button_exit)
-        # self.h_box1.addStretch(1)
+        self.left_widget = QtWidgets.QWidget()
+        self.left_widget.setObjectName('left_widget')
+        self.left_layout = QtWidgets.QGridLayout()
+        self.left_widget.setLayout(self.left_layout)
 
-        self.h_box2 = QHBoxLayout()
-        self.g_tree = QtWidgets.QGridLayout()
-        self.h_box2.addLayout(self.g_tree)
+        self.right_widget = QtWidgets.QWidget()
+        self.right_widget.setObjectName('right_widget')
+        self.right_layout = QtWidgets.QGridLayout()
+        self.right_widget.setLayout(self.right_layout)
 
-        self.v_box = QVBoxLayout()
+        self.main_layout.addWidget(self.left_widget, 2, 0, 12, 3)
+        self.main_layout.addWidget(self.right_widget, 1, 5, 12, 10)
+        self.setCentralWidget(self.main_widget)
 
+        self.right_bar_widget = QtWidgets.QWidget()  # 右侧顶部搜索框部件
+        self.right_bar_layout = QtWidgets.QGridLayout()  # 右侧顶部搜索框网格布局
+        self.right_bar_widget.setLayout(self.right_bar_layout)
+
+        self.top_left_button = QtWidgets.QPushButton("打开文件tst")
+        self.top_left_button.setObjectName('top_label')
+        self.right_bar_layout.addWidget(self.top_left_button, 1, 0, 1, 3)
+
+        self.top_center_bg = QtWidgets.QToolButton()
+        self.top_center_bg.setIconSize(QtCore.QSize(600, 27))  # 300, 200
+        self.right_bar_layout.addWidget(self.top_center_bg, 0, 5)
+
+        self.top_center = QtWidgets.QLabel("")
+        self.top_center.setObjectName('mid_label')
+        self.right_bar_layout.addWidget(self.top_center, 0, 0)
+
+        self.top_right_button = QtWidgets.QPushButton("保存与退出")
+        self.top_right_button.setIconSize(QtCore.QSize(30, 27))  # 300, 200
+        self.top_right_button.setObjectName('top_label')
+
+        self.right_bar_widget.setLayout(self.right_bar_layout)
+        self.right_bar_layout.addWidget(self.top_right_button, 0, 7, 0, 3)
+        self.right_bar_widget_search_input = QtWidgets.QLabel()
+
+        self.right_layout.addWidget(self.right_bar_widget_search_input, 5, 7, 1, 1)
+        self.right_bar_layout.addWidget(self.right_bar_widget_search_input, 0, 1, 1, 8)
+        self.right_layout.addWidget(self.right_bar_widget, 0, 0, 1, 9)
+
+        self.right_recommend_widget = QtWidgets.QWidget()  # 推荐封面部件
+        self.right_recommend_layout = QtWidgets.QGridLayout()  # 推荐封面网格布局
+        self.right_recommend_widget.setLayout(self.right_recommend_layout)
         self.lg_pic = QtWidgets.QToolButton()
-        self.lg_pic.setIcon(QtGui.QIcon("./bird.jpg"))  # 设置按钮图标
-        self.lg_pic.setIconSize(QtCore.QSize(900, 450))
-        self.v_box.addWidget(self.lg_pic)
+        self.lg_pic.setIcon(QtGui.QIcon(global_fileContent))  # 设置按钮图标
+        self.lg_pic.setIconSize(QtCore.QSize(800, 400))  # 设置图标大小
 
-        self.h_box2.addLayout(self.v_box)
+        self.right_recommend_layout.addWidget(self.lg_pic, 0, 0)
 
-        self.h_bottom_box = QHBoxLayout()
-        self.v_box.addLayout(self.h_bottom_box)
+        self.right_layout.addWidget(self.right_recommend_widget, 2, 0, 2, 9)
 
-        self.v_bottom_box_right = QVBoxLayout()
-        self.v_bottom_box_left = QVBoxLayout()
+        # fourth part - LOWER MID
 
-        self.h_bottom_box.addLayout(self.v_bottom_box_left)
+        self.lower_mid_widget = QtWidgets.QWidget()  # 最新歌曲部件
+        self.lower_mid_layout = QtWidgets.QGridLayout()  # 最新歌曲部件网格布局
+        self.lower_mid_widget.setLayout(self.lower_mid_layout)
 
-        self.sub_model_name = QtWidgets.QLabel("\n" + '      模型子物体名称:')
-        self.sub_model_name.setObjectName("text_label")
+        self.lower_mid_label = QtWidgets.QLabel("   模型子物体名称:" + global_modelTitle)
+        self.lower_mid_label.setObjectName('middle_label')
 
-        self.sub_model_name_name = QtWidgets.QLabel("")
+        self.lower_mid_label_2 = QtWidgets.QLabel("   子物体贴图信息:")
+        self.lower_mid_label_2.setObjectName('mid_label')
 
-        self.sub_model_name_name.setObjectName("label_name")
+        self.lower_mid_bg = QtWidgets.QToolButton()
+        self.lower_mid_bg.setIconSize(QtCore.QSize(600, 400))  # 600, 200
 
-        self.sub_model_infos = QtWidgets.QLabel(""" 
+        self.right_layout.addWidget(self.lower_mid_bg, 5, 2)
 
-        子物体贴图信息:""")
+        self.right_layout.addWidget(self.lower_mid_widget, 3, 0, 1, 5)
+        self.right_layout.addWidget(self.lower_mid_widget, 4, 3, 1, 4)
 
-        self.sub_model_infos.setObjectName("text_label_2")
+        self.right_layout.addWidget(self.lower_mid_label, 4, 2, 1, 1)
 
-        self.sub_model_info_info = QtWidgets.QLabel("")
-        self.sub_model_info_info.setObjectName("info_name")
+        # LOWER RIGHT SECTION
 
-        self.h_bottom_box_left_modelname = QHBoxLayout()
+        self.right_playlist_widget = QtWidgets.QWidget()
+        self.right_playlist_layout = QtWidgets.QGridLayout()
+        self.right_playlist_widget.setLayout(self.right_playlist_layout)
 
-        # self.v_bottom_box_left.addStretch(1)
-        self.v_bottom_box_left.addLayout(self.h_bottom_box_left_modelname)
-        self.h_bottom_box_left_modelname.addWidget(self.sub_model_name)
-        self.h_bottom_box_left_modelname.addWidget(self.sub_model_name_name)
+        self.lower_right_label = QtWidgets.QLabel("      材料类型:" + global_mat_type)
+        self.lower_right_label.setObjectName('right_lable')
+        print(global_mat_type)
 
-        self.h_bottom_box_left_modelinfo = QHBoxLayout()
-        self.h2_bottom_box_left_modelinfo = QHBoxLayout()
+        self.lower_right_button_1 = QtWidgets.QPushButton("选择")
+        self.lower_right_button_1.setObjectName('left_label')
+        self.right_layout.addWidget(self.lower_right_button_1, 6, 7, 1, 1)
 
-        # self.v_bottom_box_left.addStretch(1)
-        self.v_bottom_box_left.addLayout(self.h_bottom_box_left_modelinfo)
-        self.v_bottom_box_left.addLayout(self.h2_bottom_box_left_modelinfo)
-
-        self.h_bottom_box_left_modelinfo.addWidget(self.sub_model_infos)
-        self.h2_bottom_box_left_modelinfo.addWidget(self.sub_model_info_info)
-        self.v_bottom_box_left.addStretch(7)
-
-        # 选择材质 模块
+        self.lower_right_bg = QtWidgets.QToolButton()
+        self.lower_right_bg.setIconSize(QtCore.QSize(350, 200))  # 300, 200
 
         self.lower_right_icon = QtWidgets.QToolButton()
-        self.lower_right_icon.setIcon(QtGui.QIcon('./cat.jpg'))  # 设置按钮图标
-        self.lower_right_icon.setIconSize(QtCore.QSize(220, 220))  # 设置图标大小
-        self.h_bottom_box.addWidget(self.lower_right_icon)
+        self.lower_right_icon.setIcon(QtGui.QIcon(global_fileContent))  # 设置按钮图标
+        self.lower_right_icon.setIconSize(QtCore.QSize(180, 200))  # 设置图标大小
 
-        self.h_bottom_box.addLayout(self.v_bottom_box_right)
-        self.lower_right_label = QtWidgets.QLabel("      材质类型 : ")
-        self.lower_right_label.setObjectName("text_label")
-        self.lower_right_label_detail = QtWidgets.QLabel("")
-        self.lower_right_label_detail.setObjectName("text_label_detail")
+        self.right_playlist_layout.addWidget(self.lower_right_bg, 0, 0)
+        self.right_playlist_layout.addWidget(self.lower_right_icon, 0, 0)
 
-        self.v_bottom_box_right.addStretch(2)
-        self.v_bottom_box_right.addWidget(self.lower_right_label)
-        self.v_bottom_box_right.addWidget(self.lower_right_label_detail)
+        self.right_layout.addWidget(self.right_playlist_widget, 5, 0, 1, 5)
+        self.right_layout.addWidget(self.right_playlist_widget, 5, 5, 1, 4)
 
-        self.v_bottom_box_right.addStretch(11)
-        self.button_choose = QtWidgets.QPushButton("选择")
-        self.button_choose.setObjectName("choose")
-        self.v_bottom_box_right.addWidget(self.button_choose)
-        self.v_bottom_box_right.addStretch(2)
-
-        self.main_box = QVBoxLayout()
-        # main_box.addStretch(1)
-        self.main_box.addLayout(self.h_box1)
-        # main_box.addStretch(1)
-        self.main_box.addLayout(self.h_box2)
-        # main_box.addStretch(1)
-        self.setLayout(self.main_box)
+        self.right_layout.addWidget(self.lower_right_label, 5, 7, 1, 1)
+        self.right_layout.addWidget(self.lower_right_button_1, 6, 7, 1, 1)
 
         self.tree_widget = QTreeWidget(self)
-        self.g_tree.addWidget(self.tree_widget, 5, 0, 1, 2)
+        self.left_layout.addWidget(self.tree_widget, 5, 0, 1, 3)
         self.tree_widget.header().setVisible(False)
 
         # CONNECT FUNCTION PART
 
-        self.button_choose.pressed.connect(self.select_material)
-        self.button_open.pressed.connect(self.open_file_names_dialog)
+        self.lower_right_button_1.pressed.connect(self.selectMaterial)
+        self.top_left_button.pressed.connect(self.openFileNamesDialog)
         self.tree_widget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
         # # 其中tree_item_click是自己定义的槽函数
-        self.button_exit.clicked.connect(self.on_button_click)
 
-        # # FONT
-        #
-        # font = QtGui.QFont()
-        # font.setFamily('微软雅黑')
-        # font.setBold(True)
-        # font.setPointSize(13)
-        # font.setWeight(75)
-        #
-        # self.button_exit.setFont(font)
+        self.show()
 
-    '''open file function'''
-
-    def open_file_names_dialog(self):
+    '''select material function'''
+    def selectMaterial(self):
         options = QFileDialog.Options()
 
         options |= QFileDialog.DontUseNativeDialog
         files, _ = QFileDialog.getOpenFileNames(self, "QFileDialog.getOpenFileNames()", "",
                                                 "All Files (*);;Python Files (*.py)", options=options)
 
-        # str_path = ""
         if files:
-            str_path = ''.join(files)
-            _, file_name = os.path.split(str_path)
-            print(str_path)
+            str = ''.join(files)
+            _, fileName = os.path.split(str)
 
-            rh = ReadHelper(str_path)
+        # setting icon for material
+        global global_fileContent
+        global_fileContent = './' + fileName
+        self.lower_right_icon.setIcon(QtGui.QIcon(global_fileContent))
+
+        # setting file path for material type
+        self.lower_right_label = QtWidgets.QLabel.clear(self.lower_right_label)
+        global global_mat_type
+        global_mat_type = fileName
+        self.lower_right_label = QtWidgets.QLabel("      材料类型: \n" + "     " + global_mat_type)
+        self.lower_right_label.setObjectName('right_lable')
+        self.right_layout.addWidget(self.lower_right_label, 5, 7, 1, 1)
+
+    '''open file function'''
+    def openFileNamesDialog(self):
+        options = QFileDialog.Options()
+
+        options |= QFileDialog.DontUseNativeDialog
+        files, _ = QFileDialog.getOpenFileNames(self, "QFileDialog.getOpenFileNames()", "",
+                                                "All Files (*);;Python Files (*.py)", options=options)
+        if files:
+            print("files", files)
+            str = ''.join(files)
+            print(str)
+
+            rh = ReadHelper(str)
             global global_rh
             global_rh = rh
 
-            self.path_edit.setText(str_path)
+            # print(filePath)
+            self.top_center = QtWidgets.QLabel.clear(self.top_center)
+            self.top_center = QtWidgets.QLabel(rh.path)  # create
+            self.top_center.setObjectName('mid_label')  # setParameter
+            self.right_bar_layout.addWidget(self.top_center, 0, 0)
 
-            QtWidgets.QTreeWidget.clear(self.tree_widget)  # clear last time
+
+            self.lower_mid_label = QtWidgets.QLabel(global_modelTitle)
+
+            self.lower_mid_label.setObjectName('middle_label')
+            self.right_layout.addWidget(self.lower_mid_label, 4, 2, 1, 1)
+
+            # clear last time
+            QtWidgets.QLabel.clear(self.lower_mid_label_2)
+            # QtWidgets.QTreeWidget.clear(self.tree_widget)  # QTreeWidgetItem object: root
 
             self.tree_widget = QTreeWidget(self)
-            self.g_tree.addWidget(self.tree_widget, 5, 0, 1, 3)
+            self.left_layout.addWidget(self.tree_widget, 5, 0, 1, 3)
             self.tree_widget.header().setVisible(False)
 
             self.tree_widget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
             # 其中tree_item_click是自己定义的槽函数
+
+            # QTreeWidget add data
+            self.tree_widget.setAlternatingRowColors(True)
 
             key_list = rh.key_list
             print(key_list)
@@ -185,85 +220,44 @@ class Example(QWidget):
                 child = QtWidgets.QTreeWidgetItem(root)  # child of root
                 child.setText(0, key_list[i])
 
-    '''choose tree_item function'''
+            # "   子物体贴图信息:"
+            self.lower_mid_label_2 = QtWidgets.QLabel("   子物体贴图信息:")
+            self.lower_mid_label_2.setObjectName('mid_label')
+            self.right_layout.addWidget(self.lower_mid_label_2, 5, 2, 1, 1)
 
+    '''choose tree_item function'''
     def tree_item_click(self, item, n):
         global global_rh
         it = item.text(n)
+        it.setObjectName('smallest_font')
         print(it)
         # file name
-        self.sub_model_name_name.setText("\n" + it)
+        self.lower_mid_label.setText("   模型子物体名称: " + it)
         values = global_rh.get_value(it)
         print(values)
-        details = ''' '''
-        flag = True
+        details = "   子物体贴图信息:\n"
         for k, v in values.items():
-            details += """ 
-             """
-            print("kv: " + k, v)
-            if flag:
-                flag = False
-            else:
-                pass
+            print(k, v)
+            details += "   "
             details += k
             details += ' : '
             details += v
-            details += "\n"
-            print("det: " + details)
-        print("details: " + details)
-        self.sub_model_info_info.setText(details)
+            details += '\n'
+        print(details)
+        self.lower_mid_label_2.setText(details)
 
-    '''select material function'''
+        # change pic
+        self.lg_pic.setIcon(QtGui.QIcon(global_rh.get_value(it)['url']))
 
-    def select_material(self):
-        options = QFileDialog.Options()
 
-        options |= QFileDialog.DontUseNativeDialog
-        files, _ = QFileDialog.getOpenFileNames(self, "QFileDialog.getOpenFileNames()", "",
-                                                "All Files (*);;Python Files (*.py)", options=options)
-        str_path = file_name = ""
-        if files:
-            str_path = ''.join(files)
-            _, file_name = os.path.split(str_path)
-
-        self.lower_right_icon.setIcon(QtGui.QIcon(str_path))  # 设置按钮图标
-        self.lower_right_label.setText("      材质类型 : ")
-
-        self.lower_right_label_detail.setText("         " + file_name)
-
-    def on_button_click(self):
-        qApp = QApplication.instance()
-        qApp.quit()
-
-    # 支持窗口拖动,重写两个方法
-    def mousePressEvent(self, event):
-        if event.button() == QtCore.Qt.LeftButton:
-            self.m_drag = True
-            self.m_DragPosition = event.globalPos() - self.pos()
-            event.accept()
-
-    def mouseMoveEvent(self, QMouseEvent):
-        if QMouseEvent.buttons() and QtCore.Qt.LeftButton:
-            self.move(QMouseEvent.globalPos() - self.m_DragPosition)
-            QMouseEvent.accept()
-
-    def mouseReleaseEvent(self, QMouseEvent):
-        self.m_drag = False
-
-    '''read qss file'''
-
-    @staticmethod
-    def read_qss(style):
-        with open(style, 'r') as f:
-            return f.read()
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    gui = MainUi()
+    gui.show()
+    sys.exit(app.exec_())
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = Example()
-    style_sheet = ex.read_qss('./style.qss')
-    ex.setStyleSheet(style_sheet)
-    jenny_style_sheet = ex.read_qss('./jenny_style.qss')
-    ex.setStyleSheet(jenny_style_sheet)
-    ex.show()
-    sys.exit(app.exec_())
+    import sys
+
+    main()

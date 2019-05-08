@@ -66,7 +66,7 @@ class Example(QWidget):
 
         self.h_bottom_box.addWidget(self.v_bottom_box_left_widget)
 
-        self.sub_model_name = QtWidgets.QLabel("\n" + '      模型子物体名称:')
+        self.sub_model_name = QtWidgets.QLabel("    模型子物体名称:")
         self.sub_model_name.setObjectName("text_label")
 
         self.sub_model_name_name = QtWidgets.QLabel("")
@@ -77,7 +77,7 @@ class Example(QWidget):
         
         子物体贴图信息:""")
 
-        self.sub_model_infos.setObjectName("text_label_2")
+        self.sub_model_infos.setObjectName("text_label")
 
         self.sub_model_info_info = QtWidgets.QLabel("")
         self.sub_model_info_info.setObjectName("info_name")
@@ -92,14 +92,10 @@ class Example(QWidget):
         self.h_bottom_box_left_modelname.addWidget(self.sub_model_name_name)
 
         self.h_bottom_box_left_modelinfo = QHBoxLayout()
-        self.h2_bottom_box_left_modelinfo = QHBoxLayout()
-
         # self.v_bottom_box_left.addStretch(1)
         self.v_bottom_box_left.addLayout(self.h_bottom_box_left_modelinfo)
-        self.v_bottom_box_left.addLayout(self.h2_bottom_box_left_modelinfo)
-
         self.h_bottom_box_left_modelinfo.addWidget(self.sub_model_infos)
-        self.h2_bottom_box_left_modelinfo.addWidget(self.sub_model_info_info)
+        self.h_bottom_box_left_modelinfo.addWidget(self.sub_model_info_info)
         self.v_bottom_box_left.addStretch(7)
 
         # 选择材质 模块
@@ -109,25 +105,15 @@ class Example(QWidget):
         self.lower_right_icon.setIconSize(QtCore.QSize(180, 180))  # 设置图标大小
         self.h_bottom_box_right.addWidget(self.lower_right_icon)
 
-<<<<<<< HEAD
-        self.h_bottom_box.addLayout(self.v_bottom_box_right)
-        self.lower_right_label = QtWidgets.QLabel("      材质类型 : ")
-=======
         self.h_bottom_box.addWidget(self.h_bottom_box_right_widget)
         self.lower_right_label = QtWidgets.QLabel("      材质类型:")
->>>>>>> 455b356e58ab3ac8d517d8a32cd73e7a67e5b08f
         self.lower_right_label.setObjectName("text_label")
-        self.lower_right_label_detail= QtWidgets.QLabel("")
-        self.lower_right_label_detail.setObjectName("text_label_detail")
-
 
         self.v_bottom_box_right = QVBoxLayout()
         self.h_bottom_box_right.addLayout(self.v_bottom_box_right)
 
         self.v_bottom_box_right.addStretch(2)
         self.v_bottom_box_right.addWidget(self.lower_right_label)
-        self.v_bottom_box_right.addWidget(self.lower_right_label_detail)
-
         self.v_bottom_box_right.addStretch(11)
         self.button_choose = QtWidgets.QPushButton("选 择")
         self.button_choose.setObjectName("choose")
@@ -236,32 +222,6 @@ class Example(QWidget):
 
     '''choose tree_item function'''
     def tree_item_click(self, item, n):
-<<<<<<< HEAD
-        global global_rh
-        it = item.text(n)
-        print(it)
-        # file name
-        self.sub_model_name_name.setText("\n" + it)
-        values = global_rh.get_value(it)
-        print(values)
-        details = ''' '''
-        flag = True
-        for k, v in values.items():
-            details += """ 
-             """
-            print("kv: " + k, v)
-            if flag:
-                flag = False
-            else:
-                pass
-            details += k
-            details += ' : '
-            details += v
-            details += "\n"
-            print("det: " + details)
-        print("details: " +details)
-        self.sub_model_info_info.setText(details)
-=======
         if item == self.root:
             print("root")
             if item.isExpanded():
@@ -303,8 +263,7 @@ class Example(QWidget):
             col = QColor(25, 25, 5)
             col.setNamedColor("#fff")
             c.setForeground(0, col)
-            c.set
->>>>>>> 455b356e58ab3ac8d517d8a32cd73e7a67e5b08f
+            # c.set
 
     '''select material function'''
     def select_material(self):
@@ -319,9 +278,8 @@ class Example(QWidget):
             _, file_name = os.path.split(str_path)
 
         self.lower_right_icon.setIcon(QtGui.QIcon(str_path))  # 设置按钮图标
-        self.lower_right_label.setText("      材质类型 : ")
-
-        self.lower_right_label_detail.setText("         " + file_name)
+        self.lower_right_label.setText('''      材质类型: 
+        ''' + file_name)
 
     def on_button_click(self):
         q = QApplication.instance()
