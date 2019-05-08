@@ -156,8 +156,8 @@ class Example(QWidget):
         ##self.root.setIcon(0, QtGui.QIcon("icons/down_arrow.png"))
         self.root.setIcon(0, QtGui.QIcon("icons/closed_folder.png"))
 
-
-        self.root.setText(0, rh.name)  # set text of self.root
+        sanjiao = "△▽"
+        self.root.setText(0, " " + rh.name + "            ▾")  # set text of self.root
         col = QColor(0, 124, 176)  # 0 124 176 blue
         # col.setNamedColor("#fff")
         self.root.setBackground(0, col)
@@ -231,16 +231,14 @@ class Example(QWidget):
             if item.isExpanded():
                 self.tree_widget.collapseItem(item)
                 self.root.setIcon(0, QtGui.QIcon("icons/closed_folder.png"))
-                myAc = QWidget.QAction(self.root)
-                myAc = setIcon(QtGui.QIcon("icons/closed_folder.png"))
-                self.root.addAction(myAc, QtWidgets.QTreeWidgetItem.TrailingPosition)
+                self.root.setText(0, " " + global_rh.name + "            ▾")
 
             else:
                 self.tree_widget.expandItem(item)
                 self.root.setIcon(0, QtGui.QIcon("icons/open_folder.png"))
+                self.root.setText(0, " " + global_rh.name + "            ▴")
 
         else:
-            global global_rh
             # print(n)
             it = item.text(n)
             # print(item)
