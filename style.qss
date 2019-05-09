@@ -2,6 +2,10 @@
 qss file
 by wmxl 05/05/2019
  */
+#lg_pic_layout{
+    background-color: white;
+}
+
 QPushButton{
     height: 35px;
     background-color:#90D68A;
@@ -29,7 +33,11 @@ QPushButton:hover {
 }
 #choose{
     width: 60px;
+    font-size:18px;
+    margin-left: auto;
+    margin-right: auto;
 }
+
 #choose:hover{
     background-color:#333333;
 }
@@ -39,17 +47,19 @@ QPushButton:hover {
     border-style:outset;
     font-family: "Microsoft YaHei";
 }
+
+
 #text_label{
-    text-align: right;
+    /*text-align: right;*/
     font-family: "Microsoft YaHei";
-    font-size: 22px;
+    font-size: 18px;
     font-weight: bold;
     color: #3c3d3d;
 }
 #text_label_2{
     text-align: right;
     font-family: "Microsoft YaHei";
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
     color: #3c3d3d;
 }
