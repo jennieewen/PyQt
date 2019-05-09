@@ -5,6 +5,15 @@ by wmxl 05/05/2019
 #lg_pic_layout{
     background-color: white;
 }
+#bottom_layout{
+    background-color: white;
+}
+#right_layout{
+    background-color: white;
+}
+#top_layout{
+    background-color: white;
+}
 
 QPushButton{
     height: 35px;
