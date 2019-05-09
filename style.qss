@@ -11,7 +11,6 @@ QPushButton{
     font-weight: 600;
     border: none;
 }
-
 QPushButton:hover {
     background-color:#333333;
 }
@@ -40,20 +39,6 @@ QPushButton:hover {
     border-style:outset;
     font-family: "Microsoft YaHei";
 }
-
-
-#tree{
-    color:#ffffff;
-    font-size:30px;
-    font-family: "Microsoft YaHei";
-    /*font-weight: 600;*/
-    border: none;
-    background-color: #242E3B;
-}
-#tree:hover{
-    color:lawngreen;
-}
-
 #text_label{
     text-align: right;
     font-family: "Microsoft YaHei";
@@ -61,7 +46,6 @@ QPushButton:hover {
     font-weight: bold;
     color: #3c3d3d;
 }
-
 #text_label_2{
     text-align: right;
     font-family: "Microsoft YaHei";
@@ -69,7 +53,6 @@ QPushButton:hover {
     font-weight: bold;
     color: #3c3d3d;
 }
-
 #text_label_detail{
     font-family: "Microsoft YaHei";
     font-size: 18px;
@@ -97,4 +80,26 @@ QPushButton:hover {
 #info_name {
    font-family: "Microsoft YaHei";
     font-size: 12px;
-    color: #a1a3a3; }
+    color: #a1a3a3;
+}
+
+
+/*和树有关的所有style*/
+
+#tree{
+    height: 30px;
+    color:#ffffff;
+    font-size:23px;
+    font-family: "Microsoft YaHei";
+    /*font-weight: 600;*/
+    background-color: #242E3B;
+}
+
+#tree::item:hover{
+    /*background-color: aqua;*/
+
+}
+
+#tree::item:selected{
+
+}

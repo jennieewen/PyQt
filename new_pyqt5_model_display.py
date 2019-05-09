@@ -13,6 +13,8 @@ from ReadHelper import ReadHelper
 from PyQt5.QtGui import QPainter, QColor, QBrush
 
 
+
+
 class Example(QWidget):
 
     def __init__(self):
@@ -99,7 +101,6 @@ class Example(QWidget):
         self.lower_right_icon.setIconSize(QtCore.QSize(180, 180))  # 设置图标大小
         self.h_bottom_box_right.addWidget(self.lower_right_icon)
 
-
         self.h_bottom_box.addWidget(self.h_bottom_box_right_widget)
         self.lower_right_label = QtWidgets.QLabel("      材质类型 :")
         self.lower_right_label.setObjectName("text_label")
@@ -137,9 +138,7 @@ class Example(QWidget):
 
         self.tree_widget = QTreeWidget(self)
         self.tree_widget.setObjectName("tree")
-
-        self.tree_widget_header = self.tree_widget.header()
-        self.tree_widget_header.setVisible(False)
+        self.tree_widget.header().setVisible(False)
         self.g_tree.addWidget(self.tree_widget, 0, 0, 1, 2)
 
         # test tree style (need delete later)
@@ -152,27 +151,29 @@ class Example(QWidget):
         # print(key_list)
 
         self.root = QtWidgets.QTreeWidgetItem(self.tree_widget)  # QTreeWidgetItem object: self.root
+        # 取消自带的小箭头
+        self.tree_widget.setRootIsDecorated(False)
+        # 取消原来的选中蓝色效果
+        self.tree_widget.setSelectionMode(QAbstractItemView.NoSelection)
+        # 取消原来的选中框框
+        self.tree_widget.setFocusPolicy(QtCore.Qt.NoFocus)
+        # self.tree_widget.setFocusPolicy(False)  same effect as above line
 
-        ##self.root.setIcon(0, QtGui.QIcon("icons/down_arrow.png"))
         self.root.setIcon(0, QtGui.QIcon("icons/closed_folder.png"))
-
-        sanjiao = "△▽"
-        self.root.setText(0, " " + rh.name + "            ▾")  # set text of self.root
+        self.root.setText(0, " " + rh.name + "                   ▾")  # set text of self.root
         col = QColor(0, 124, 176)  # 0 124 176 blue
         # col.setNamedColor("#fff")
         self.root.setBackground(0, col)
-        # col.setNamedColor("#")
-
-        # print(self.root)
+        self.root.setSizeHint(0, QtCore.QSize(45, 45))
 
         self.child = []
-
         for i in range(len(key_list)):
             child_ = QtWidgets.QTreeWidgetItem(self.root)  # child of root
-            child_.setText(0, key_list[i])
+            child_.setText(0, "    " + key_list[i])
+            child_.setFont(0, QtGui.QFont("Microsoft YaHei", 10))
+            child_.setSizeHint(0, QtCore.QSize(45, 45))
             # print(child_)
             self.child.append(child_)
-
 
         # test tree style end
 
@@ -182,8 +183,6 @@ class Example(QWidget):
         self.tree_widget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
         # # 其中tree_item_click是自己定义的槽函数
         self.tree_widget.itemSelectionChanged.connect(self.tree_item_change)
-        self.tree_widget.setRootIsDecorated(False)
-
 
     '''open file function'''
     def open_file_names_dialog(self):
@@ -208,8 +207,10 @@ class Example(QWidget):
             QtWidgets.QTreeWidget.clear(self.tree_widget)  # clear last time
 
             self.tree_widget = QTreeWidget(self)
+            self.tree_widget.setObjectName("tree")
             self.g_tree.addWidget(self.tree_widget, 5, 0, 1, 3)
             self.tree_widget.header().setVisible(False)
+            self.g_tree.addWidget(self.tree_widget, 0, 0, 1, 2)
 
             self.tree_widget.itemClicked['QTreeWidgetItem*', 'int'].connect(self.tree_item_click)
             # 其中tree_item_click是自己定义的槽函数
@@ -217,27 +218,52 @@ class Example(QWidget):
             key_list = rh.key_list
             print(key_list)
 
-            self.root = QtWidgets.QTreeWidgetItem(self.tree_widget)  # QTreeWidgetItem object: root
-            self.root.setText(0, rh.name)  # set text of root
+            # 取消自带的小箭头
+            self.tree_widget.setRootIsDecorated(False)
+            # 取消原来的选中蓝色效果
+            self.tree_widget.setSelectionMode(QAbstractItemView.NoSelection)
+            # 取消原来的选中框框
+            self.tree_widget.setFocusPolicy(QtCore.Qt.NoFocus)
+            # self.tree_widget.setFocusPolicy(False)  same effect as above line
 
+            # 树的根节点
+            self.root = QtWidgets.QTreeWidgetItem(self.tree_widget)  # QTreeWidgetItem object: self.root
+            self.root.setIcon(0, QtGui.QIcon("icons/closed_folder.png"))
+            self.root.setText(0, " " + rh.name + "                   ▾")  # set text of self.root
+            col = QColor(0, 124, 176)  # 0 124 176 blue
+            # col.setNamedColor("#fff")
+            self.root.setBackground(0, col)
+            self.root.setSizeHint(0, QtCore.QSize(45, 45))
+
+            self.child = []
             for i in range(len(key_list)):
-                child = QtWidgets.QTreeWidgetItem(self.root)  # child of root
-                child.setText(0, key_list[i])
+                child_ = QtWidgets.QTreeWidgetItem(self.root)  # child of root
+                child_.setText(0, "    " + key_list[i])
+                child_.setFont(0, QtGui.QFont("Microsoft YaHei", 10))
+                child_.setSizeHint(0, QtCore.QSize(45, 45))
+                # print(child_)
+                self.child.append(child_)
+
 
     '''choose tree_item function'''
     def tree_item_click(self, item, n):
+        # 把上次的颜色恢复成白色
+        for c in self.child:
+            col = QColor(255, 255, 255)
+            c.setForeground(0, col)
+        # 如果当前item是root
         if item == self.root:
             print("root")
             if item.isExpanded():
                 self.tree_widget.collapseItem(item)
                 self.root.setIcon(0, QtGui.QIcon("icons/closed_folder.png"))
-                self.root.setText(0, " " + global_rh.name + "            ▾")
-
+                self.root.setText(0, " " + global_rh.name + "                   ▾")
             else:
                 self.tree_widget.expandItem(item)
                 self.root.setIcon(0, QtGui.QIcon("icons/open_folder.png"))
-                self.root.setText(0, " " + global_rh.name + "            ▴")
+                self.root.setText(0, " " + global_rh.name + "                   ▴")
 
+        # 如果当前item是孩子节点
         else:
             # print(n)
             it = item.text(n)
@@ -253,7 +279,7 @@ class Example(QWidget):
             flag = True
             for k, v in values.items():
                 details += "\n"
-                print("kv: " + k, v)
+                # print("kv: " + k, v)
                 if flag:
                     flag = False
                 else:
@@ -268,11 +294,6 @@ class Example(QWidget):
     '''select change function'''
     def tree_item_change(self):
         print("select change")
-        for c in self.child:
-            col = QColor(25, 25, 5)
-            col.setNamedColor("#fff")
-            c.setForeground(0, col)
-            # c.set
 
     '''select material function'''
     def select_material(self):
@@ -290,6 +311,8 @@ class Example(QWidget):
         self.lower_right_label.setText("      材质类型 : ")
 
         self.lower_right_label_detail.setText("         " + file_name)
+
+
 
     def on_button_click(self):
         q = QApplication.instance()
