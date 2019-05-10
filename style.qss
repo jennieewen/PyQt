@@ -17,7 +17,7 @@ by wmxl 05/05/2019
 
 QPushButton{
     height: 35px;
-    background-color:#90D68A;
+    background-color:#62BE77;
     color:#ffffff;
     font-size:15px;
     font-family: "Microsoft YaHei";
@@ -51,8 +51,7 @@ QPushButton:hover {
     background-color:#333333;
 }
 #path{
-    font-size: 24px;
-    font-weight: 100;
+    font-size: 20px;
     border-style:outset;
     font-family: "Microsoft YaHei";
 }
@@ -65,46 +64,42 @@ QPushButton:hover {
     font-weight: bold;
     color: #3c3d3d;
 }
-#text_label_2{
+#model_info{
     text-align: right;
     font-family: "Microsoft YaHei";
     font-size: 15px;
     font-weight: bold;
     color: #3c3d3d;
 }
-#text_label_detail{
+#model_info_value{
     font-family: "Microsoft YaHei";
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     color: #a1a3a3;
 }
-
-
-#smallest_font{
+#model_name_value{
     font-family: "Microsoft YaHei";
     font-size: 18px;
     font-weight: bold;
-    color: #60AAE6;
+    color: #007CB0;
 
 }
 
-#label_name {
+#material_type {
     text-align: right;
     font-family: "Microsoft YaHei";
-    font-size: 22px;
+    font-size: 18px;
     font-weight: bold;
-    color: #60AAE6;
 }
 
-#info_name {
+#material_type_value {
    font-family: "Microsoft YaHei";
-    font-size: 12px;
+    font-size: 14px;
     color: #a1a3a3;
 }
 
 
 /*和树有关的所有style*/
-
 #tree{
     height: 30px;
     color:#ffffff;
@@ -114,11 +109,29 @@ QPushButton:hover {
     background-color: #242E3B;
 }
 
+/*这是对的用法，可以直接这样写*/
 #tree::item:hover{
     /*background-color: aqua;*/
-
+}
+#tree::item:selected{
+    /*background-color: red;*/
 }
 
-#tree::item:selected{
+TitleBar{
+    background-color: black;
+}
 
+/**/
+#buttonMinimum,#buttonClose {
+    border: none;
+    background-color: black;
+}
+/**/
+#buttonMinimum:hover,#buttonMaximum:hover {
+    background-color: black;
+    color: white;
+}
+
+#buttonClose:hover {
+    color: white;
 }

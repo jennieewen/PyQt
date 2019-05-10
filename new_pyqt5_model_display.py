@@ -12,6 +12,7 @@ import os
 from ReadHelper import ReadHelper
 from PyQt5.QtGui import QPainter, QColor, QBrush
 
+global global_rh
 
 class Example(QWidget):
 
@@ -20,14 +21,14 @@ class Example(QWidget):
 
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # prevents starttimer error
         self.setFixedSize(1200, 800)
-        # self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
+        # self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint) 隐藏TopBar
 
         # 顶部 打开文件和地址栏
         self.button_open = QPushButton("打开FBX模型文件")
         self.button_open.setObjectName("open")
         self.path_edit = QLineEdit()
         self.path_edit.setObjectName("path")
-        self.button_exit = QPushButton("保存并退出")
+        self.button_exit = QPushButton("保存并导出")
         self.button_exit.setObjectName("exit")
 
         self.h_box1 = QHBoxLayout()
@@ -44,23 +45,29 @@ class Example(QWidget):
         self.tree_widget = QTreeWidget(self)
         self.tree_widget.setObjectName("tree")
         self.tree_widget.header().setVisible(False)
+        self.g_tree.addWidget(self.tree_widget, 0, 0, 1, 2)
+
+        self.tree_widget = QTreeWidget(self)
+        self.tree_widget.setObjectName("tree")
+        self.tree_widget.header().setVisible(False)
         self.g_tree.addWidget(self.tree_widget)
         self.g_tree.addStretch(1)
 
         self.v_box = QVBoxLayout()
 
-        # large picture part - start
-        self.lg_pic = QToolButton()
+        # LARGE PICTURE PART
+        self.lg_pic = QtWidgets.QToolButton()
         self.lg_pic.setIcon(QtGui.QIcon("./bird.jpg"))
-        self.lg_pic.setIconSize(QtCore.QSize(873, 450))
+        self.lg_pic.setIconSize(QtCore.QSize(875, 450))
+        self.lg_pic.setMinimumHeight(450)
 
         self.g_lg_pic = QGridLayout()
         self.g_lg_pic_widget = QWidget()
         self.g_lg_pic_widget.setObjectName("lg_pic_layout")
         self.g_lg_pic_widget.setLayout(self.g_lg_pic)
+        self.g_lg_pic.addWidget(self.lg_pic)
 
         self.v_box.addWidget(self.g_lg_pic_widget)
-        self.g_lg_pic.addWidget(self.lg_pic)
         self.h_box2.addLayout(self.v_box)
         # large picture part - end
 
@@ -72,39 +79,23 @@ class Example(QWidget):
         self.v_bottom_box_left_widget = QWidget()
         self.v_bottom_box_left_widget.setLayout(self.v_bottom_box_left)
 
-        self.g_bottom_box_right = QGridLayout()
-        self.g_bottom_box_right_widget = QWidget()
-        self.g_bottom_box_right_widget.setObjectName("right_layout")
-        self.g_bottom_box_right_widget.setLayout(self.g_bottom_box_right)
+        self.h_bottom_box_right = QHBoxLayout()
+        self.h_bottom_box_right_widget = QtWidgets.QWidget()
+        self.h_bottom_box_right_widget.setObjectName("bottom_right_layout")
+        self.h_bottom_box_right_widget.setLayout(self.h_bottom_box_right)
 
+        # NAME INFO PART
         self.h_bottom_box.addWidget(self.v_bottom_box_left_widget)
-        self.h_bottom_box.addWidget(self.g_bottom_box_right_widget)
-        # BOTTOM PART STRUCTURE - END
-
-        # MODEL NAME AND INFO PART - START
-        self.g_model_name = QGridLayout()
-        self.g_model_name_widget = QWidget()
-        self.g_model_name_widget.setObjectName("top_layout")
-        self.g_model_name_widget.setLayout(self.g_model_name)
-
-        self.g_model_info = QGridLayout()
-        self.g_model_info_widget = QWidget()
-        self.g_model_info_widget.setObjectName("bottom_layout")
-        self.g_model_info_widget.setLayout(self.g_model_info)
-
-        self.v_bottom_box_left.addWidget(self.g_model_name_widget)
-        self.v_bottom_box_left.addWidget(self.g_model_info_widget)
-
-        self.sub_model_name = QtWidgets.QLabel('      模型子物体名称 :')
-        self.sub_model_name.setObjectName("text_label")
-        self.sub_model_name_name = QtWidgets.QLabel("a.txtxtxt")
-        self.sub_model_name_name.setObjectName("label_name")
-
-        self.sub_model_infos = QtWidgets.QLabel('         子物体贴图信息 :')
-        self.sub_model_infos.setObjectName("text_label_2")
-        self.sub_model_info_info = QtWidgets.QLabel("sdffsdfsfsfsdfsdfsdfds"
-                                                    "sdfsfdfsdfsdfsdfsdfdsfd")
-        self.sub_model_info_info.setObjectName("info_name")
+        self.model_name = QtWidgets.QLabel('  模型子物体名称 :')
+        self.model_name.setObjectName("model_name")
+        self.model_name_value = QtWidgets.QLabel("")
+        self.model_name_value.setObjectName("model_name_value")
+        self.model_splitter = QLabel("————————————————————————————————————————————")
+        self.model_splitter.setObjectName("splitter")
+        self.model_info = QtWidgets.QLabel('     子物体贴图信息 : ')
+        self.model_info.setObjectName("model_info")
+        self.model_info_value = QtWidgets.QLabel("")
+        self.model_info_value.setObjectName("model_info_value")
 
         self.g_model_name.addWidget(self.sub_model_name, 0, 0, 1, 1)
         self.g_model_name.addWidget(self.sub_model_name_name, 0, 1, 1, 1)
@@ -113,8 +104,7 @@ class Example(QWidget):
         self.g_model_info.addWidget(self.sub_model_info_info, 0, 1, 1, 1)
 
 
-        # 选择材质 模块
-
+        # CHOICE MATERIAL-TYPE MODEL
         self.lower_right_icon = QtWidgets.QToolButton()
         self.lower_right_icon.setIcon(QtGui.QIcon('./cat.jpg'))  # 设置按钮图标
         self.lower_right_icon.setIconSize(QtCore.QSize(180, 180))  # 设置图标大小
@@ -127,18 +117,11 @@ class Example(QWidget):
         self.lower_right_label_detail.setObjectName("text_label_detail")
         self.button_choose = QtWidgets.QPushButton("选 择")
         self.button_choose.setObjectName("choose")
+        self.v_bottom_box_right.addWidget(self.button_choose)
+        self.v_bottom_box_right.addStretch(2)
 
-        self.g_bottom_box_right.addWidget(self.lower_right_icon, 0, 0, 3, 1)
-        self.g_bottom_box_right.addWidget(self.lower_right_label, 0, 1, 1, 1)
-        self.g_bottom_box_right.addWidget(self.lower_right_label_detail, 1, 1, 1, 1)
-        self.g_bottom_box_right.addWidget(self.button_choose, 2, 1, 1, 1)
-
-
-        with open('./style_bottom.qss', 'r') as f:
-            self.g_bottom_box_right_widget.setStyleSheet(f.read())
-
-        with open('./style_bottom.qss', 'r') as f:
-            self.v_bottom_box_left_widget.setStyleSheet(f.read())
+        # with open('./style_bottom.qss', 'r') as f:
+        #     self.h_bottom_box_right_widget.setStyleSheet(f.read())
 
         # 主要布局设置
         self.h_box1_widget = QtWidgets.QWidget()
@@ -174,6 +157,8 @@ class Example(QWidget):
             rh = ReadHelper(str_path)
             global global_rh
             global_rh = rh
+
+            global_rh.print_all()
 
             self.path_edit.setText(str_path)
 
@@ -242,13 +227,17 @@ class Example(QWidget):
             item.setForeground(0, col)
 
             # file name
-            self.sub_model_name_name.setText(it)
+            # print("str:"+it)
+            it = it.strip()
+            self.model_name_value.setText(it)
+
+            # global global_rh
+            global_rh.print_all()
             values = global_rh.get_value(it)
-            # print(values)
+            print(values)
             details = ''
             flag = True
             for k, v in values.items():
-                details += "\n"
                 # print("kv: " + k, v)
                 if flag:
                     flag = False
@@ -257,9 +246,11 @@ class Example(QWidget):
                 details += k
                 details += ' : '
                 details += v
+                details += """
+"""
 
-            print(details)
-            self.sub_model_info_info.setText(details)
+            # print(details)
+            self.model_info_value.setText(details)
 
     '''select material function'''
     def select_material(self):
@@ -274,28 +265,9 @@ class Example(QWidget):
             _, file_name = os.path.split(str_path)
 
         self.lower_right_icon.setIcon(QtGui.QIcon(str_path))  # 设置按钮图标
-        self.lower_right_label.setText("      材质类型 : ")
+        self.material_type.setText(" 材质类型 : ")
 
-        self.lower_right_label_detail.setText("         " + file_name)
-
-    def on_button_click(self):
-        q = QApplication.instance()
-        q.quit()
-
-    # 支持窗口拖动,重写两个方法
-    def mousePressEvent(self, event):
-        if event.button() == QtCore.Qt.LeftButton:
-            self.m_drag = True
-            self.m_DragPosition = event.globalPos() - self.pos()
-            event.accept()
-
-    def mouseMoveEvent(self, QMouseEvent):
-        if QMouseEvent.buttons() and QtCore.Qt.LeftButton:
-            self.move(QMouseEvent.globalPos() - self.m_DragPosition)
-            QMouseEvent.accept()
-
-    def mouseReleaseEvent(self, QMouseEvent):
-        self.m_drag = False
+        self.material_type_value.setText(" " + file_name)
 
     '''read qss file'''
     @staticmethod
